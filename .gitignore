@@ -1,0 +1,13 @@
+*.pyc
+*.log
+*.pid
+*.swp
+*.csv
+*.swo
+*.py~
+.idea/
+build/
+temp/
+mussui/config.py
+log/
+**/.DS_Store

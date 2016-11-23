@@ -1,0 +1,103 @@
+{% extends "sysadmin/layout/master.html" %}
+{% block content %}
+<section class="content-header">
+  <h1>Servers</h1>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+        {% csrf_token %}
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Server List</h3>
+            <div class="box-tools">
+              <form method="GET">
+              <div class="input-group input-group-sm" style="width: 200px;">
+                <div class="input-group-btn">
+                    <span post-url="/admin/servers/create" class="btn btn-primary" onclick="return create_server(this);"><b>Create</b></span>
+                </div>
+                <input type="text" name="search" class="form-control pull-right" placeholder="Search" value="{{search}}">
+                <div class="input-group-btn">
+                  <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+              </form>
+            </div>
+          </div>
+          <div class="box-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Hostname</th>
+                  <th>IP</th>
+                  <th>Comments</th>
+                  <th>Created At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for server in servers %}
+                <tr>
+                  <td>{{server.hostname}}</td>
+                  <td>{{server.ip}}</td>
+                  <td>{{server.comments}}</td>
+                  <td>{{server.created_at|fdate}}</td>
+                  <td>
+                    <span post-url="/admin/servers/{{server.id}}/edit" data-id="{{server.id}}" class="btn btn-primary btn-xs" onclick="return edit_server(this);">Edit</span>
+                    <a href="/admin/servers/{{server.id}}/delete" class="btn btn-danger btn-xs" onclick="return double_check();">Delete</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="box-footer clearfix">
+            {% paginate servers request %}
+          </div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<div id="server-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="server-modal-title">Create Server</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="box-body">
+            <div class="form-group">
+              <label for="server-hostname" class="col-sm-2 control-label">Hostname</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="server-hostname" placeholder="Hostname">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="server-ip" class="col-sm-2 control-label">IP</label>
+
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="server-ip" placeholder="IP">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="server-comments" class="col-sm-2 control-label">Comments</label>
+
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="server-comments" placeholder="Comments">
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="server-modal-submit">Save</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}

@@ -1,0 +1,52 @@
+<div id="customer-detail-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 750px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Customer: <span id="customer-detail-userid"></span></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+        <div class="col-xs-10">
+          <div class="table-responsive">
+            <table class="table">
+              <tbody><tr>
+                <th style="width:50%">User ID:</th>
+                <td><span id="customer-detail-userid-2"></span></td>
+              </tr>
+              <tr>
+                <th>Status:</th>
+                <td><span id="customer-detail-status"></span></td>
+              </tr>
+              <tr>
+                <th>Password:</th>
+                <td><span id="customer-detail-password"></span></td>
+              </tr>
+              <tr>
+                <th>Created At:</th>
+                <td><span id="customer-detail-created-at"></span></td>
+              </tr>
+            </tbody></table>
+          </div>
+        </div>
+        </div>
+        <div class="row"><!-- chart-row -->
+            <div class="col-xs-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <i class="fa fa-bar-chart-o"></i>
+                      <h3 class="box-title">Bandwidth</h3>
+                    </div>
+                    <div class="box-body">
+                        <div id="customer-detail-bandwidth-chart" style="height: 250px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.chart-row --/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

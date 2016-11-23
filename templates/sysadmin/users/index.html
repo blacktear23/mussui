@@ -1,0 +1,102 @@
+{% extends "sysadmin/layout/master.html" %}
+{% block content %}
+<section class="content-header">
+  <h1>Customers</h1>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+        {% csrf_token %}
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Customer List</h3>
+            <div class="box-tools">
+              <form method="GET">
+              <div class="input-group input-group-sm" style="width: 200px;">
+                <div class="input-group-btn">
+                    <span post-url="/admin/customers/create" class="btn btn-primary" onclick="return create_customer(this);"><b>Create</b></span>
+                </div>
+                <input type="text" name="search" class="form-control pull-right" placeholder="Search" value="{{search}}">
+                <div class="input-group-btn">
+                  <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+              </form>
+            </div>
+          </div>
+          <div class="box-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>User ID</th>
+                  <th>Status</th>
+                  <th>Password</th>
+                  <th>Created At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in users %}
+                <tr>
+                    <td><a href="#" onclick="show_customer_detail(this);" data-userid="{{user.userid}}" data-name="{{user.name}}", data-status="{{user.status}}" data-password="{{user.password}}" data-created_at="{{user.created_at|fdate}}" data-id={{user.id}}>{{user.name}}</td>
+                  <td>{{user.userid}}</td>
+                  <td>
+                    {% if user.status == "Enabled" %}
+                    <span class="badge bg-green">{{user.status}}</span>
+                    {% else %}
+                    <span class="badge bg-red">{{user.status}}</span>
+                    {% endif %}
+                  </td>
+                  <td>{{user.password}}</td>
+                  <td>{{user.created_at|fdate}}</td>
+                  <td>
+                    {% if user.status == "Disabled" %}
+                    <a href="/admin/customers/{{user.id}}/enable" class="btn btn-success btn-xs">Enable</a>
+                    {% else %}
+                    <a href="/admin/customers/{{user.id}}/disable" class="btn btn-warning btn-xs">Disable</a>
+                    {% endif %}
+                    <a href="/admin/customers/{{user.id}}/delete" class="btn btn-danger btn-xs" onclick="return double_check();">Delete</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="box-footer clearfix">
+            {% paginate users request %}
+          </div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<div id="create-customer-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Create Customer</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="box-body">
+            <div class="form-group">
+              <label for="create-customer-name" class="col-sm-2 control-label">Name</label>
+
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="create-customer-name" placeholder="Name">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="create-customer-submit">Save</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% include "sysadmin/users/detail_modal.html" %}
+{% endblock %}
