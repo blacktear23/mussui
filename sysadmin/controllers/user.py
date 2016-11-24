@@ -28,14 +28,37 @@ def index(request):
 def create(request):
     if 'name' not in request.POST:
         return render_400("require name parameter")
+    if 'servers' not in request.POST:
+        return render_400("require servers parameter")
+    try:
+        servers = int(request.POST['servers'])
+    except:
+        return render_400("servers parameter should be number")
     name = request.POST['name']
     if name == "":
         return render_400("Name should not empty")
     try:
-        SSUser.create(name)
+        SSUser.create(name, servers)
     except Exception as e:
         return render_400("%s" % e)
     return render_200("OK")
+
+
+def render_ssuser(user):
+    servers = user.get_servers()
+    ret = {
+        'name': user.name,
+        'status': user.status,
+        'password': user.password,
+        'servers': servers,
+    }
+    return ret
+
+
+@login_required
+def details(request, id):
+    user = get_object_or_404(SSUser, pk=id)
+    return render_json(render_ssuser(user))
 
 
 @login_required

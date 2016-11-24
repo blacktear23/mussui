@@ -35,6 +35,8 @@ def detail(request, id):
     data = {
         "hostname": server.hostname,
         "ip": server.ip,
+        "status": server.status,
+        "encryption": server.encryption,
         "comments": server.comments,
     }
     return render_json(data)

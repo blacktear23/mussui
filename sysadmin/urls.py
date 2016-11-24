@@ -13,6 +13,7 @@ urlpatterns += patterns('sysadmin.controllers.user',
     # User admin
     url(r"^customers/?$", 'index'),
     url(r"^customers/create$", 'create'),
+    url(r"^customers/(?P<id>\d+)$", 'details'),
     url(r"^customers/(?P<id>\d+)/enable$", 'enable'),
     url(r"^customers/(?P<id>\d+)/disable$", 'disable'),
     url(r"^customers/(?P<id>\d+)/delete$", 'delete'),

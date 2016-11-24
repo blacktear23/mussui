@@ -1,3 +1,4 @@
+import json
 import random
 import hashlib
 from datetime import datetime
@@ -20,20 +21,23 @@ class SSUser(models.Model):
     status = models.CharField(max_length=20, null=False, default="Enabled")
     bandwidth = models.IntegerField(null=False, default=2)
     created_at = models.DateTimeField(auto_now_add=True)
+    servers_cache = models.CharField(max_length=1024, null=False, default="")
+    number_server = models.IntegerField(null=False, default=1)
 
     class Meta:
         db_table = "user"
 
     @classmethod
-    def create(cls, name):
+    def create(cls, name, servers):
         query = SSUser.objects.filter(name=name)
         if query.count() > 0:
             raise Exception("Name already exists")
         uid = generate_user_id()
         if uid is None:
             raise Exception("Cannot generate userid")
-        user = SSUser(userid=uid, name=name, status=SSUser.STATUS[0])
+        user = SSUser(userid=uid, name=name, status=SSUser.STATUS[0], number_server=servers)
         user.generate_password()
+        user.auto_assign_servers()
         user.save()
 
     def generate_password(self):
@@ -48,6 +52,26 @@ class SSUser(models.Model):
     def disable(self):
         self.status = SSUser.STATUS[1]
         self.save()
+
+    def auto_assign_servers(self):
+        servers = list(Server.objects.filter(status="Enabled"))
+        ret = set()
+        loop_times = min(self.number_server, len(servers))
+        random.shuffle(servers)
+        for i in range(loop_times):
+            server = servers[i]
+            ret.add(server.id)
+        self.servers_cache = json.dumps(list(ret))
+
+    def get_servers(self):
+        if self.servers_cache == "":
+            self.auto_assign_servers()
+        servers = json.loads(self.servers_cache)
+        query = Server.objects.filter(id__in=servers, status="Enabled")
+        ret = []
+        for server in query:
+            ret.append([server.hostname, server.ip, server.encryption])
+        return ret
 
 
 class FlowStatistic(models.Model):
@@ -64,7 +88,19 @@ class FlowStatistic(models.Model):
 
 
 class Server(models.Model):
+    ENCRYPTION_METHODS = [
+        'aes-128-cfb',
+        'aes-192-cfb',
+        'aes-256-cfb',
+        'rc4-md5',
+    ]
+    STATUS = [
+        'Enabled',
+        'Disabled',
+    ]
     hostname = models.CharField(max_length=255, null=False, db_index=True, unique=True)
     ip = models.GenericIPAddressField(null=False)
+    status = models.CharField(max_length=20, null=False, default="Enabled")
+    encryption = models.CharField(max_length=50, null=False, default="aes-128-cfb")
     comments = models.TextField(null=False, blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)

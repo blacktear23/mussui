@@ -30,6 +30,8 @@
                 <tr>
                   <th>Hostname</th>
                   <th>IP</th>
+                  <th>Status</th>
+                  <th>Encryption Method</th>
                   <th>Comments</th>
                   <th>Created At</th>
                   <th>Actions</th>
@@ -40,6 +42,14 @@
                 <tr>
                   <td>{{server.hostname}}</td>
                   <td>{{server.ip}}</td>
+                  <td>
+                    {% if server.status == "Enabled" %}
+                    <span class="badge bg-green">{{server.status}}</span>
+                    {% else %}
+                    <span class="badge bg-red">{{server.status}}</span>
+                    {% endif %}
+                  </td>
+                  <td>{{server.encryption|upper}}</td>
                   <td>{{server.comments}}</td>
                   <td>{{server.created_at|fdate}}</td>
                   <td>
@@ -77,9 +87,28 @@
             </div>
             <div class="form-group">
               <label for="server-ip" class="col-sm-2 control-label">IP</label>
-
               <div class="col-sm-10">
                 <input type="text" class="form-control" id="server-ip" placeholder="IP">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="server-status" class="col-sm-2 control-label">Status</label>
+              <div class="col-sm-10">
+                <select id="server-status" class="form-control">
+                    <option value="Enabled">Enabled</option>
+                    <option value="Disabled">Disabled</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="server-encryption" class="col-sm-2 control-label">Encryption Method</label>
+              <div class="col-sm-10">
+                <select id="server-encryption" class="form-control">
+                    <option value="aes-128-cfb">AES-128-CFB</option>
+                    <option value="aes-192-cfb">AES-192-CFB</option>
+                    <option value="aes-256-cfb">AES-256-CFB</option>
+                    <option value="rc4-md5">RC4-MD5</option>
+                </select>
               </div>
             </div>
             <div class="form-group">
