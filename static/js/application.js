@@ -67,6 +67,7 @@ function create_server(elem) {
             ielem.val("")
             ielem.parent().parent().removeClass("has-error");
         }
+        $("#server-port").val("8387");
         $("#server-status").val("Enabled");
         $("#server-encryption").val("aes-128-cfb");
         $("#server-hostname").focus();
@@ -78,11 +79,12 @@ function create_server(elem) {
         var comments = $("#server-comments").val();
         var encryption = $("#server-encryption").val();
         var status = $("#server-status").val();
+        var port = $("#server-port").val();
         $.ajax({
             async: false,
             type: "POST",
             url: url,
-            data: add_csrf_token({'hostname': hostname, 'ip': ip, 'comments': comments, 'encryption': encryption, 'status': status}),
+            data: add_csrf_token({'hostname': hostname, 'ip': ip, 'comments': comments, 'encryption': encryption, 'status': status, 'port': port}),
             statusCode: {
                 200: function() {
                     window.location.reload(true);
@@ -163,11 +165,12 @@ function edit_server(elem) {
         var comments = $("#server-comments").val();
         var encryption = $("#server-encryption").val();
         var status = $("#server-status").val();
+        var port = $("#server-port").val();
         $.ajax({
             async: false,
             type: "POST",
             url: url,
-            data: add_csrf_token({'hostname': hostname, 'ip': ip, 'comments': comments, 'encryption': encryption, 'status': status}),
+            data: add_csrf_token({'hostname': hostname, 'ip': ip, 'comments': comments, 'encryption': encryption, 'status': status, 'port': port}),
             statusCode: {
                 200: function() {
                     window.location.reload(true);
@@ -319,6 +322,25 @@ function show_customer_detail(elem) {
     });
     emodal.on("shown.bs.modal", function() {
         render_customer_modal_chart(elem);
+    });
+    emodal.modal("show");
+}
+
+function show_customer_config(elem) {
+    var elem = $(elem);
+    var emodal = $("#customer-config-modal");
+    emodal.unbind('show.bs.modal');
+    emodal.on('show.bs.modal', function() {
+        $.ajax({
+            async: false,
+            method: "GET",
+            url: "/admin/customers/" + elem.data("id") + "/config",
+            statusCode: {
+                200: function(data) {
+                    $("#customer-config-config").html(data['config']);
+                }
+            }
+        })
     });
     emodal.modal("show");
 }

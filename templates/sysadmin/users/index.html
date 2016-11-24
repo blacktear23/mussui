@@ -51,6 +51,7 @@
                   <td>{{user.password}}</td>
                   <td>{{user.created_at|fdate}}</td>
                   <td>
+                      <a href="#" class="btn btn-info btn-xs" onclick="show_customer_config(this);" data-id="{{user.id}}">Config</a>
                     {% if user.status == "Disabled" %}
                     <a href="/admin/customers/{{user.id}}/enable" class="btn btn-success btn-xs">Enable</a>
                     {% else %}
@@ -103,6 +104,23 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="create-customer-submit">Save</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="customer-config-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Customer Config</h4>
+      </div>
+      <div class="modal-body">
+          <pre id="customer-config-config" style="height:300px;"></pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

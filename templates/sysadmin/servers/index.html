@@ -41,7 +41,7 @@
                 {% for server in servers %}
                 <tr>
                   <td>{{server.hostname}}</td>
-                  <td>{{server.ip}}</td>
+                  <td>{{server.ip}}:{{server.port}}</td>
                   <td>
                     {% if server.status == "Enabled" %}
                     <span class="badge bg-green">{{server.status}}</span>
@@ -89,6 +89,12 @@
               <label for="server-ip" class="col-sm-2 control-label">IP</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" id="server-ip" placeholder="IP">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="server-port" class="col-sm-2 control-label">Port</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="server-port" placeholder="Port">
               </div>
             </div>
             <div class="form-group">

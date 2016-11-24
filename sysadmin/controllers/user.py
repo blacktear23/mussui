@@ -62,6 +62,15 @@ def details(request, id):
 
 
 @login_required
+def config(request, id):
+    user = get_object_or_404(SSUser, pk=id)
+    data = {
+        "config": user.generate_config(),
+    }
+    return render_json(data)
+
+
+@login_required
 def enable(request, id):
     user = get_object_or_404(SSUser, pk=id)
     user.enable()

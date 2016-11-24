@@ -70,8 +70,21 @@ class SSUser(models.Model):
         query = Server.objects.filter(id__in=servers, status="Enabled")
         ret = []
         for server in query:
-            ret.append([server.hostname, server.ip, server.encryption])
+            ret.append([server.hostname, "%s:%s" % (server.ip, server.port), server.encryption])
         return ret
+
+    def generate_config(self):
+        server_password = []
+        for server in self.get_servers():
+            item = [server[1], self.password, server[2]]
+            server_password.append(item)
+        cfg_data = {
+            "local_port": 7070,
+            "auth": True,
+            "user_id": self.userid,
+            "server_password": server_password,
+        }
+        return json.dumps(cfg_data, indent=4, sort_keys=True)
 
 
 class FlowStatistic(models.Model):
@@ -100,6 +113,7 @@ class Server(models.Model):
     ]
     hostname = models.CharField(max_length=255, null=False, db_index=True, unique=True)
     ip = models.GenericIPAddressField(null=False)
+    port = models.IntegerField(null=False, default=8387)
     status = models.CharField(max_length=20, null=False, default="Enabled")
     encryption = models.CharField(max_length=50, null=False, default="aes-128-cfb")
     comments = models.TextField(null=False, blank=True, default="")

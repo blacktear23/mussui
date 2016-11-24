@@ -11,6 +11,11 @@ def post_data(request):
     return render_json({"status": "OK"})
 
 
+def validate_host(hostname):
+    count = Server.objects.filter(hostname=hostname).count()
+    return count > 0
+
+
 def process_data(data):
     # in different date
     for item in data:
@@ -26,6 +31,8 @@ def process_host_data(data):
 def process_instance_data(instance):
     date = datetime.strptime(instance['date'], "%Y-%m-%d %H:%M")
     host = instance['host']
+    if not validate_host(host):
+        return
     userid = int(instance['instance'])
     bw_data = instance['bandwidth']
     flow_in = int(bw_data['inbound'])

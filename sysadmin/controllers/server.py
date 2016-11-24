@@ -35,6 +35,7 @@ def detail(request, id):
     data = {
         "hostname": server.hostname,
         "ip": server.ip,
+        "port": server.port,
         "status": server.status,
         "encryption": server.encryption,
         "comments": server.comments,
