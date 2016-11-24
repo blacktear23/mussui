@@ -70,7 +70,7 @@ class SSUser(models.Model):
         query = Server.objects.filter(id__in=servers, status="Enabled")
         ret = []
         for server in query:
-            ret.append([server.hostname, "%s:%s" % (server.ip, server.port), server.encryption])
+            ret.append([server.hostname, "%s:%s" % (server.ip, server.port), "%s-auth" % server.encryption])
         return ret
 
     def generate_config(self):
