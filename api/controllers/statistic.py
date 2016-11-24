@@ -16,6 +16,11 @@ def validate_host(hostname):
     return count > 0
 
 
+def validate_userid(userid):
+    count = SSUser.objects.filter(userid=userid).count()
+    return count > 0
+
+
 def process_data(data):
     # in different date
     for item in data:
@@ -34,6 +39,8 @@ def process_instance_data(instance):
     if not validate_host(host):
         return
     userid = int(instance['instance'])
+    if not validate_userid(userid):
+        return
     bw_data = instance['bandwidth']
     flow_in = int(bw_data['inbound'])
     flow_out = int(bw_data['outbound'])
