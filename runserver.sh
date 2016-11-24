@@ -13,11 +13,11 @@ start_web() {
 }
 
 stop_web() {
-	if [ -f $UWSGI_PID_FILE ]; then
-		echo Stop uWSGI Server
+    if [ -f $UWSGI_PID_FILE ]; then
+        echo Stop uWSGI Server
         uwsgi --stop $UWSGI_PID_FILE
-		rm -f $UWSGI_PID_FILE
-	fi
+        rm -f $UWSGI_PID_FILE
+    fi
 }
 
 reload_web() {
