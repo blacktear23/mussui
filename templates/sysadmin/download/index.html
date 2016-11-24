@@ -1,0 +1,63 @@
+{% extends "sysadmin/layout/master.html" %}
+{% block content %}
+<section class="content-header">
+  <h1>Download Client</h1>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="box box-solid">
+        <div class="box-header with-border">
+          <i class="fa fa-windows"></i>
+          <h3 class="box-title">Windows Version</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <a class="btn btn-primary col-md-12" href="/static/download/windows/muss-local.exe">
+            <i class="fa fa-download"></i>
+            Download muss-local.exe
+          </a>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+
+    <div class="col-md-4">
+      <div class="box box-solid">
+        <div class="box-header with-border">
+          <i class="fa fa-linux"></i>
+          <h3 class="box-title">Linux Version</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <a class="btn btn-success col-md-12" href="/static/download/linux/muss-local.exe">
+            <i class="fa fa-download"></i>
+            Download muss-local
+          </a>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+
+    <div class="col-md-4">
+      <div class="box box-solid">
+        <div class="box-header with-border">
+          <i class="fa fa-apple"></i>
+          <h3 class="box-title">Mac Version</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <a class="btn btn-info col-md-12" href="/static/download/mac/muss-local">
+            <i class="fa fa-download"></i>
+            Download muss-local
+          </a>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+</section>
+{% endblock %}

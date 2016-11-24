@@ -28,3 +28,7 @@ urlpatterns += patterns('sysadmin.controllers.server',
     url(r"^servers/(?P<id>\d+)/edit$", 'edit'),
     url(r"^servers/(?P<id>\d+)/delete$", 'delete'),
 )
+
+urlpatterns += patterns('sysadmin.controllers.download',
+    url(r'^download/?$', 'index'),
+)
