@@ -21,16 +21,18 @@ function create_customer(elem) {
     $("#create-customer-modal").on("show.bs.modal", function() {
         $("#create-customer-name").val("").focus();
         $("#create-customer-servers").val(1);
+        $("#create-customer-bandwidth").val(4);
     });
     $("#create-customer-submit").unbind("click");
     $("#create-customer-submit").click(function() {
         var name = $("#create-customer-name").val();
         var servers = $("#create-customer-servers").val();
+        var bandwidth = $("#create-customer-bandwidth").val();
         $.ajax({
             async: false,
             type: "POST",
             url: url,
-            data: add_csrf_token({'name': name, 'servers': servers}),
+            data: add_csrf_token({'name': name, 'servers': servers, 'bandwidth': bandwidth}),
             statusCode: {
                 200: function() {
                     window.location.reload(true);
@@ -341,6 +343,38 @@ function show_customer_config(elem) {
                 }
             }
         })
+    });
+    emodal.modal("show");
+}
+
+function edit_customer(elem) {
+    var elem = $(elem);
+    var emodal = $("#edit-customer-modal");
+    var pfx = "#edit-customer-";
+    emodal.unbind("show.bs.modal");
+    emodal.on("show.bs.modal", function() {
+        $(pfx+"servers").val(elem.data("servers"));
+        $(pfx+"bandwidth").val(elem.data("bandwidth")).focus();
+    });
+    $(pfx+"submit").unbind("click");
+    $(pfx+"submit").click(function() {
+        var url = "/admin/customers/" + elem.data("id") + "/edit";
+        var servers = $(pfx+"servers").val();
+        var bandwidth = $(pfx+"bandwidth").val();
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: url,
+            data: add_csrf_token({'servers': servers, 'bandwidth': bandwidth}),
+            statusCode: {
+                200: function() {
+                    window.location.reload(true);
+                },
+                400: function(data, text) {
+                    alert(data.responseText);
+                }
+            }
+        });
     });
     emodal.modal("show");
 }

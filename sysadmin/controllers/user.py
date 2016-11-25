@@ -32,15 +32,55 @@ def create(request):
         return render_400("require servers parameter")
     try:
         servers = int(request.POST['servers'])
+        if servers < 1:
+            return render_400("servers should not less than 1")
     except:
         return render_400("servers parameter should be number")
+    if 'bandwidth' not in request.POST:
+        return render_400("require bandwidth parameter")
+    try:
+        bandwidth = int(request.POST['bandwidth'])
+        if bandwidth < 1:
+            return render_400("Bandwidth should not less than 1")
+    except:
+        return render_400("bandwidth parameter should be number")
     name = request.POST['name']
     if name == "":
         return render_400("Name should not empty")
     try:
-        SSUser.create(name, servers)
+        SSUser.create(name, servers, bandwidth)
     except Exception as e:
         return render_400("%s" % e)
+    return render_200("OK")
+
+
+@login_required
+@require_POST
+def edit(request, id):
+    ssuser = get_object_or_404(SSUser, pk=id)
+    if 'bandwidth' not in request.POST:
+        return render_400("require bandwidth parameter")
+    try:
+        bandwidth = int(request.POST['bandwidth'])
+        if bandwidth < 1:
+            return render_400("Bandwidth should not less than 1")
+    except:
+        return render_400("bandwidth parameter should be number")
+    if 'servers' not in request.POST:
+        return render_400("require servers parameter")
+    try:
+        servers = int(request.POST['servers'])
+        if servers < 1:
+            return render_400("servers should not less than 1")
+    except:
+        return render_400("servers parameter should be number")
+    if 'bandwidth' not in request.POST:
+        return render_400("require bandwidth parameter")
+    ssuser.bandwidth = bandwidth
+    if servers != ssuser.number_server:
+        ssuser.number_server = servers
+        ssuser.auto_assign_servers(False)
+    ssuser.save()
     return render_200("OK")
 
 

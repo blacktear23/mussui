@@ -28,16 +28,16 @@ class SSUser(models.Model):
         db_table = "user"
 
     @classmethod
-    def create(cls, name, servers):
+    def create(cls, name, servers, bandwidth):
         query = SSUser.objects.filter(name=name)
         if query.count() > 0:
             raise Exception("Name already exists")
         uid = generate_user_id()
         if uid is None:
             raise Exception("Cannot generate userid")
-        user = SSUser(userid=uid, name=name, status=SSUser.STATUS[0], number_server=servers)
+        user = SSUser(userid=uid, name=name, status=SSUser.STATUS[0], number_server=servers, bandwidth=bandwidth)
         user.generate_password()
-        user.auto_assign_servers()
+        user.auto_assign_servers(False)
         user.save()
 
     def generate_password(self):
@@ -53,7 +53,7 @@ class SSUser(models.Model):
         self.status = SSUser.STATUS[1]
         self.save()
 
-    def auto_assign_servers(self):
+    def auto_assign_servers(self, save=True):
         servers = list(Server.objects.filter(status="Enabled"))
         ret = set()
         loop_times = min(self.number_server, len(servers))
@@ -62,6 +62,8 @@ class SSUser(models.Model):
             server = servers[i]
             ret.add(server.id)
         self.servers_cache = json.dumps(list(ret))
+        if save:
+            self.save()
 
     def get_servers(self):
         if self.servers_cache == "":

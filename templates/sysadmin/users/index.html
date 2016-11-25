@@ -31,6 +31,7 @@
                   <th>Name</th>
                   <th>User ID</th>
                   <th>Status</th>
+                  <th>Bandwidth</th>
                   <th>Password</th>
                   <th>Created At</th>
                   <th>Actions</th>
@@ -48,10 +49,12 @@
                     <span class="badge bg-red">{{user.status}}</span>
                     {% endif %}
                   </td>
+                  <td>{{user.bandwidth}} Mbps</td>
                   <td>{{user.password}}</td>
                   <td>{{user.created_at|fdate}}</td>
                   <td>
-                      <a href="#" class="btn btn-info btn-xs" onclick="show_customer_config(this);" data-id="{{user.id}}">Config</a>
+                    <a href="#" class="btn btn-info btn-xs" onclick="show_customer_config(this);" data-id="{{user.id}}">Config</a>
+                    <a href="#" class="btn btn-info btn-xs" onclick="edit_customer(this);" data-id="{{user.id}}" data-servers="{{user.number_server}}" data-bandwidth="{{user.bandwidth}}">Edit</a>
                     {% if user.status == "Disabled" %}
                     <a href="/admin/customers/{{user.id}}/enable" class="btn btn-success btn-xs">Enable</a>
                     {% else %}
@@ -89,6 +92,12 @@
               </div>
             </div>
             <div class="form-group">
+              <label for="create-customer-name" class="col-sm-2 control-label">Bandwidth</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="create-customer-bandwidth" placeholder="Bandwidth">
+              </div>
+            </div>
+            <div class="form-group">
               <label for="create-customer-servers" class="col-sm-2 control-label">Servers</label>
               <div class="col-sm-10">
                 <select class="form-control" id="create-customer-servers">
@@ -121,6 +130,43 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="edit-customer-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">Edit Customer</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="box-body">
+            <div class="form-group">
+              <label for="create-customer-name" class="col-sm-2 control-label">Bandwidth</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="edit-customer-bandwidth" placeholder="Bandwidth" value="4">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="create-customer-servers" class="col-sm-2 control-label">Servers</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="edit-customer-servers">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="edit-customer-submit">Save</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
