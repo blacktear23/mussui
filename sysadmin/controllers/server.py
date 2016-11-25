@@ -2,6 +2,7 @@ from sysadmin.views import *
 
 
 @login_required
+@active_page("server")
 def index(request):
     keyword = ""
     if "search" in request.GET:

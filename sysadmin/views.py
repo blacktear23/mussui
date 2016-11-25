@@ -1,4 +1,5 @@
 import json
+from functools import wraps
 from datetime import datetime
 from django.shortcuts import *
 from django.db.models import Q
@@ -14,6 +15,16 @@ from sysadmin.forms import *
 
 add_to_builtins("django.templatetags.i18n")
 add_to_builtins("sysadmin.templatetags.tags")
+
+
+def active_page(page):
+    def active_page_wrapper(func):
+        @wraps(func)
+        def _wrapper(request, *args, **kwargs):
+            request.active_page = page
+            return func(request, *args, **kwargs)
+        return _wrapper
+    return active_page_wrapper
 
 
 def render_200(msg="<h1>HTTP 200 OK</h1>"):

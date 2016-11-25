@@ -15,16 +15,16 @@
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
       <li class="header">MAIN NAVIGATION</li>
-      <li>
+      <li class="{% sidebar_active request "dashboard" %}">
         <a href="/admin"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
       </li>
-      <li>
+      <li class="{% sidebar_active request "customer" %}">
         <a href="/admin/customers"><i class="fa fa-users"></i> <span>Customers</span></a>
       </li>
-      <li>
+      <li class="{% sidebar_active request "server" %}">
         <a href="/admin/servers"><i class="fa fa-server"></i> <span>Servers</span></a>
       </li>
-      <li>
+      <li class="{% sidebar_active request "download" %}">
         <a href="/admin/download"><i class="fa fa-download"></i> <span>Download</span></a>
       </li>
     </ul>

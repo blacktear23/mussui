@@ -19,6 +19,15 @@ def pager_url(request, page=None):
     return "%s?%s" % (path, params.urlencode())
 
 
+@register.simple_tag
+def sidebar_active(request, target):
+    if hasattr(request, 'active_page'):
+        current = request.active_page
+        if current == target:
+            return 'active'
+    return ''
+
+
 @register.filter
 def fdate(value):
     return value.strftime("%Y-%m-%d %H:%M:%S")
