@@ -10,4 +10,5 @@ build/
 temp/
 mussui/config.py
 log/
+.DS_Store
 **/.DS_Store
