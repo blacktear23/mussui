@@ -257,6 +257,24 @@ function tooltip_format_unit(data, unit, step) {
     return ret;
 }
 
+function format_number_by_step(value, unit, step) {
+    if (value > (step * step * step * step)) {
+        value = value / (step * step * step * step);
+        return Math.round(value * 100) / 100 + " T" + unit;
+    } else if (value > (step * step * step)) {
+        value = value / (step * step * step);
+        return Math.round(value * 100) / 100 + " G" + unit;
+    } else if (value > (step * step)) {
+        value = value / (step * step);
+        return Math.round(value * 100) / 100 + " M" + unit;
+    } else if (value > (step)) {
+        value = value / (step);
+        return Math.round(value * 100) / 100 + " K" + unit;
+    } else {
+        return value + " " + unit;
+    }
+}
+
 function render_chart(data, elemid) {
     var xaxis_step = calculate_interval(data[0].length);
     var opts = {
