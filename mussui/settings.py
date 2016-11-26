@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'sysadmin',
     'db',
+    'monitor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,9 +85,18 @@ DATABASES = {
         'PASSWORD': config.DATABASE['password'],
         'HOST': config.DATABASE['host'],
         'PORT': config.DATABASE.get("port", 3306),
-    }
+    },
+    'monitor': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config.DATABASE['monitor_database'],
+        'USER': config.DATABASE['monitor_username'],
+        'PASSWORD': config.DATABASE['monitor_password'],
+        'HOST': config.DATABASE['monitor_host'],
+        'PORT': config.DATABASE.get("monitor_port", 3306),
+    },
 }
 
+DATABASE_ROUTERS = ['db.router.MonitorRouter', ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

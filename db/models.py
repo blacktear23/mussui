@@ -89,19 +89,6 @@ class SSUser(models.Model):
         return json.dumps(cfg_data, indent=4, sort_keys=True)
 
 
-class FlowStatistic(models.Model):
-    userid = models.IntegerField(null=False)
-    server_name = models.CharField(max_length=255, null=False)
-    inbound_flow = models.IntegerField(null=False)
-    outbound_flow = models.IntegerField(null=False)
-    inbound_bandwidth = models.IntegerField(null=False)
-    outbound_bandwidth = models.IntegerField(null=False)
-    date = models.DateTimeField(null=False)
-
-    class Meta:
-        unique_together = (('userid', 'date', 'server_name'), )
-
-
 class Server(models.Model):
     ENCRYPTION_METHODS = [
         'aes-128-cfb',
@@ -120,3 +107,6 @@ class Server(models.Model):
     encryption = models.CharField(max_length=50, null=False, default="aes-128-cfb")
     comments = models.TextField(null=False, blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+from monitor.models import *

@@ -29,6 +29,11 @@ reload_web() {
     fi
 }
 
+migrate() {
+    $PYTHON_PATH ./manage.py migrate
+    $PYTHON_PATH ./manage.py migrate --database=monitor
+}
+
 case $1 in
     start-web):
         start_web
@@ -39,7 +44,10 @@ case $1 in
     restart-web)
         reload_web
         ;;
+    migrate)
+        migrate
+        ;;
     *)
-        echo "Usage: $SCRIPT_NAME (start-web|stop-web|restart-web)"
+        echo "Usage: $SCRIPT_NAME (start-web|stop-web|restart-web|migrate)"
         ;;
 esac
