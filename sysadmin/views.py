@@ -10,6 +10,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import *
 from db.models import *
+from monitor.models import *
 from sysadmin.forms import *
 
 

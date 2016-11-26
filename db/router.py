@@ -15,6 +15,7 @@ class MonitorRouter(object):
         """
         Attempts to write auth models go to auth_db.
         """
+        print model._meta.app_label
         if model._meta.app_label == 'monitor':
             return 'monitor'
         return None

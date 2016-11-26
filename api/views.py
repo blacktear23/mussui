@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import *
 from django.views.decorators.csrf import csrf_exempt
 from db.models import *
+from monitor.models import *
 
 
 def render_200(msg="<h1>HTTP 200 OK</h1>"):

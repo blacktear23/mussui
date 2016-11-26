@@ -107,6 +107,3 @@ class Server(models.Model):
     encryption = models.CharField(max_length=50, null=False, default="aes-128-cfb")
     comments = models.TextField(null=False, blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
-
-
-from monitor.models import *

@@ -1,5 +1,5 @@
 from datetime import *
-from django.db import connection
+from django.db import connections
 from api.views import *
 
 
@@ -59,7 +59,7 @@ def process_instance_data(instance):
 def generate_sql(userid, tstart, tend):
     tstart_str = tstart.strftime("%Y-%m-%d %H:%M:%S")
     tend_str = tend.strftime("%Y-%m-%d %H:%M:%S")
-    sql = "SELECT userid, date, SUM(inbound_bandwidth), SUM(outbound_bandwidth) FROM db_flowstatistic WHERE userid='%s' AND date BETWEEN '%s' AND '%s' GROUP BY date" % (userid, tstart_str, tend_str)
+    sql = "SELECT userid, date, SUM(inbound_bandwidth), SUM(outbound_bandwidth) FROM flow_statistic WHERE userid='%s' AND date BETWEEN '%s' AND '%s' GROUP BY date" % (userid, tstart_str, tend_str)
     return sql
 
 
@@ -71,7 +71,7 @@ def user_bandwidth(request):
     one_day_before = now - timedelta(days=1)
     sql = generate_sql(userid, one_day_before, now)
     ret = [[], []]
-    with connection.cursor() as cursor:
+    with connections['monitor'].cursor() as cursor:
         cursor.execute(sql)
         for row in cursor.fetchall():
             date_str = row[1].strftime("%Y-%m-%d %H:%M")
