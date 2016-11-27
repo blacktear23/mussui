@@ -1,8 +1,11 @@
 import json
+import redis
 import random
+import logging
 import hashlib
 from datetime import datetime
 from django.db import models
+from mussui import config
 
 
 def generate_user_id(start=1000, end=99000):
@@ -11,6 +14,34 @@ def generate_user_id(start=1000, end=99000):
         if SSUser.objects.filter(userid=uid).count() <= 0:
             return uid
     return None
+
+
+__REDIS_CONN_POOL__ = None
+
+
+def get_redis_connection():
+    global __REDIS_CONN_POOL__
+    if not config.REDIS['use']:
+        return None
+    if __REDIS_CONN_POOL__ is None:
+        pool = redis.ConnectionPool(
+            max_connections=100,
+            host=config.REDIS['host'],
+            port=config.REDIS['port'],
+            db=config.REDIS['db']
+        )
+        __REDIS_CONN_POOL__ = pool
+    return redis.Redis(connection_pool=__REDIS_CONN_POOL__)
+
+
+def clean_cache(userid):
+    try:
+        conn = get_redis_connection()
+        if conn is None:
+            return
+        conn.delete(str(userid))
+    except Exception as e:
+        logging.exception(e)
 
 
 class SSUser(models.Model):
@@ -39,6 +70,10 @@ class SSUser(models.Model):
         user.generate_password()
         user.auto_assign_servers(False)
         user.save()
+
+    def save(self):
+        super(SSUser, self).save()
+        clean_cache(self.userid)
 
     def generate_password(self):
         seed = "%s-%s" % (str(datetime.now()), self.userid)
