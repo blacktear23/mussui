@@ -34,6 +34,24 @@ migrate() {
     $PYTHON_PATH ./manage.py migrate --database=monitor
 }
 
+install_cron() {
+    if crontab -l | grep "service.py $1"; then
+        echo "Already have cron job for $1"
+    else
+        echo "Install cron job for $1"
+        TMP_FILE=crontab-temp.tmp
+        crontab -l > $TMP_FILE
+        echo "$2 $PYTHON_PATH $WORK_DIR/service.py $1 > /dev/null 2>&1" >> $TMP_FILE
+        crontab $TMP_FILE
+        rm $TMP_FILE
+    fi
+}
+
+install_rotate() {
+    # Every day 3:00 AM
+    install_cron "rotate" "0 3 * * *"
+}
+
 case $1 in
     start-web):
         start_web
@@ -46,6 +64,9 @@ case $1 in
         ;;
     migrate)
         migrate
+        ;;
+    install-rotate)
+        install_rotate
         ;;
     *)
         echo "Usage: $SCRIPT_NAME (start-web|stop-web|restart-web|migrate)"
