@@ -226,7 +226,17 @@ function render_customer_modal_chart(elem) {
         url: url,
         statusCode: {
             200: function(data) {
-                render_chart(data, pfx+"bandwidth-chart");
+                render_bandwidth_chart(data, pfx+"bandwidth-chart");
+            }
+        }
+    });
+    url = "/api/statistic/connection?userid=" + elem.data('userid');
+    $.ajax({
+        type: "GET",
+        url: url,
+        statusCode: {
+            200: function(data) {
+                render_connection_chart(data, pfx+"connection-chart");
             }
         }
     });
@@ -257,6 +267,15 @@ function tooltip_format_unit(data, unit, step) {
     return ret;
 }
 
+function tooltip_format_connection(data) {
+    var ret = '<b>' + data.points[0].key + '</b>';
+    $.each(data.points, function () {
+        ret += '<br/>' + this.series.name + ': ';
+        ret += Math.round(this.y * 100) / 100;
+    });
+    return ret;
+}
+
 function format_number_by_step(value, unit, step) {
     if (value > (step * step * step * step)) {
         value = value / (step * step * step * step);
@@ -275,14 +294,55 @@ function format_number_by_step(value, unit, step) {
     }
 }
 
-function render_chart(data, elemid) {
+function render_connection_chart(data, elemid) {
     var xaxis_step = calculate_interval(data[0].length);
     var opts = {
         credits: {
             text: ''
         },
         chart: {zoomType: 'x'},
-        colors: ['#337ab7', '#4cae4c'],
+        colors: ['#367fa9', '#00a65a'],
+        title: {text: "Connections"},
+        yAxis: {title: {text: "connections"}, min: 0},
+        xAxis: {
+            type: "category",
+            tickInterval: xaxis_step,
+            startOnTick: true
+        },
+        series: [
+            {
+                name: "Connections/S",
+                data: data[0]
+            }
+        ],
+        legend: {
+            layout: 'veritcal',
+            align: 'left',
+            verticalAlign: 'top',
+            x: 100,
+            y: 30,
+            floating: true,
+            borderWidth: 1
+        },
+        tooltip: {
+            shared: true,
+            crosshairs: true,
+            formatter: function () {
+                return tooltip_format_connection(this);
+            }
+        }
+    };
+    $(elemid).highcharts(opts);
+}
+
+function render_bandwidth_chart(data, elemid) {
+    var xaxis_step = calculate_interval(data[0].length);
+    var opts = {
+        credits: {
+            text: ''
+        },
+        chart: {zoomType: 'x'},
+        colors: ['#00a65a', '#367fa9'],
         title: {text: "Bandwidth"},
         yAxis: {title: {text: "bps"}, min: 0},
         xAxis: {

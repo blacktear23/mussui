@@ -54,9 +54,16 @@ def process_instance_data(instance):
     fs.inbound_bandwidth = bw_in
     fs.outbound_bandwidth = bw_out
     fs.save()
+    conn_data = instance['connection']
+    conns = int(conn_data['value'])
+    cs = ConnectionStatistic(userid=userid,
+                             server_name=host,
+                             date=date)
+    cs.connections = conns
+    cs.save()
 
 
-def generate_sql(userid, tstart, tend):
+def generate_bandwidth_sql(userid, tstart, tend):
     tstart_str = tstart.strftime("%Y-%m-%d %H:%M:%S")
     tend_str = tend.strftime("%Y-%m-%d %H:%M:%S")
     sql = "SELECT userid, date, SUM(inbound_bandwidth), SUM(outbound_bandwidth) FROM flow_statistic WHERE userid='%s' AND date BETWEEN '%s' AND '%s' GROUP BY date" % (userid, tstart_str, tend_str)
@@ -69,7 +76,7 @@ def user_bandwidth(request):
     userid = request.GET['userid']
     now = datetime.now()
     one_day_before = now - timedelta(days=1)
-    sql = generate_sql(userid, one_day_before, now)
+    sql = generate_bandwidth_sql(userid, one_day_before, now)
     ret = [[], []]
     with connections['monitor'].cursor() as cursor:
         cursor.execute(sql)
@@ -77,4 +84,27 @@ def user_bandwidth(request):
             date_str = row[1].strftime("%Y-%m-%d %H:%M")
             ret[0].append([date_str, int(row[2])])
             ret[1].append([date_str, int(row[3])])
+    return render_json(ret)
+
+
+def generate_connection_sql(userid, tstart, tend):
+    tstart_str = tstart.strftime("%Y-%m-%d %H:%M:%S")
+    tend_str = tend.strftime("%Y-%m-%d %H:%M:%S")
+    sql = "SELECT userid, date, SUM(connections) FROM connection_statistic WHERE userid='%s' AND date BETWEEN '%s' AND '%s' GROUP BY date" % (userid, tstart_str, tend_str)
+    return sql
+
+
+def user_connection(request):
+    if 'userid' not in request.GET:
+        return render_json_error("Require userid parameter")
+    userid = request.GET['userid']
+    now = datetime.now()
+    one_day_before = now - timedelta(days=1)
+    sql = generate_connection_sql(userid, one_day_before, now)
+    ret = [[]]
+    with connections['monitor'].cursor() as cursor:
+        cursor.execute(sql)
+        for row in cursor.fetchall():
+            date_str = row[1].strftime("%Y-%m-%d %H:%M")
+            ret[0].append([date_str, int(row[2])])
     return render_json(ret)
