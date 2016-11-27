@@ -28,11 +28,12 @@ function create_customer(elem) {
         var name = $("#create-customer-name").val();
         var servers = $("#create-customer-servers").val();
         var bandwidth = $("#create-customer-bandwidth").val();
+        var password = $("#create-customer-password").val();
         $.ajax({
             async: false,
             type: "POST",
             url: url,
-            data: add_csrf_token({'name': name, 'servers': servers, 'bandwidth': bandwidth}),
+            data: add_csrf_token({'name': name, 'servers': servers, 'bandwidth': bandwidth, 'password': password}),
             statusCode: {
                 200: function() {
                     window.location.reload(true);
@@ -439,11 +440,12 @@ function edit_customer(elem) {
         var url = "/admin/customers/" + elem.data("id") + "/edit";
         var servers = $(pfx+"servers").val();
         var bandwidth = $(pfx+"bandwidth").val();
+        var password = $(pfx+"password").val();
         $.ajax({
             async: false,
             type: "POST",
             url: url,
-            data: add_csrf_token({'servers': servers, 'bandwidth': bandwidth}),
+            data: add_csrf_token({'servers': servers, 'bandwidth': bandwidth, 'password': password}),
             statusCode: {
                 200: function() {
                     window.location.reload(true);

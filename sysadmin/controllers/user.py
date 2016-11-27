@@ -45,11 +45,16 @@ def create(request):
             return render_400("Bandwidth should not less than 1")
     except:
         return render_400("bandwidth parameter should be number")
+    if 'password' not in request.POST:
+        return render_400("require password parameter")
+    password = request.POST['password']
+    if len(password) < 6:
+        return render_400("password should not less than 6 characters")
     name = request.POST['name']
     if name == "":
         return render_400("Name should not empty")
     try:
-        SSUser.create(name, servers, bandwidth)
+        SSUser.create(name, servers, bandwidth, password)
     except Exception as e:
         return render_400("%s" % e)
     return render_200("OK")
@@ -77,6 +82,11 @@ def edit(request, id):
         return render_400("servers parameter should be number")
     if 'bandwidth' not in request.POST:
         return render_400("require bandwidth parameter")
+    password = request.POST.get('password', '')
+    if password != "":
+        if len(password) < 6:
+            return render_400("password should not less than 6 character")
+        ssuser.set_password(password, False)
     ssuser.bandwidth = bandwidth
     if servers != ssuser.number_server:
         ssuser.number_server = servers

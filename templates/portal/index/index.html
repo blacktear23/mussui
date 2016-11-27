@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Muss UI Admin</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  {% include "sysadmin/layout/css.html" %}
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body class="skin-blue sidebar-collapse">
+  {% csrf_token %}
+  <div class="wrapper">
+  <header class="main-header">
+    <!-- Logo -->
+    <a href="#" class="logo">
+      <span class="logo-lg"><b>Muss</b> Customer</span>
+    </a>
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Hello&nbsp;{{user.name}}&nbsp;&nbsp;<i class="fa fa-user"></i>
+            </a>
+            <ul class="dropdown-menu" style="width:200px;">
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li>
+                    <a href="/logout">
+                      Logout
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <div class="content-wrapper">
+    <section class="content">
+      <div class="row">
+        <div class="col-md-offset-1 col-md-10">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Download</h3>
+            </div>
+            <div class="box-body">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="box box-solid">
+                        <div class="box-header with-border">
+                          <i class="fa fa-windows"></i>
+                          <h3 class="box-title">Windows Version</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                          <a class="btn btn-primary col-md-12" href="/static/download/windows/muss-local.exe">
+                            <i class="fa fa-download"></i>
+                            Download muss-local.exe
+                          </a>
+                        </div>
+                        <!-- /.box-body -->
+                      </div>
+                      <!-- /.box -->
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="box box-solid">
+                        <div class="box-header with-border">
+                          <i class="fa fa-linux"></i>
+                          <h3 class="box-title">Linux Version</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                          <a class="btn btn-success col-md-12" href="/static/download/linux/muss-local">
+                            <i class="fa fa-download"></i>
+                            Download muss-local
+                          </a>
+                        </div>
+                        <!-- /.box-body -->
+                      </div>
+                      <!-- /.box -->
+                    </div>
+
+                    <div class="col-md-4">
+                      <div class="box box-solid">
+                        <div class="box-header with-border">
+                          <i class="fa fa-apple"></i>
+                          <h3 class="box-title">Mac Version</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                          <a class="btn btn-info col-md-12" href="/static/download/mac/muss-local">
+                            <i class="fa fa-download"></i>
+                            Download muss-local
+                          </a>
+                        </div>
+                        <!-- /.box-body -->
+                      </div>
+                      <!-- /.box -->
+                    </div>
+                  </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-offset-1 col-md-10">
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Configuration</h3>
+            </div>
+            <div class="box-body">
+                <pre>{{config}}</pre>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-offset-1 col-md-10">
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Usage</h3>
+            </div>
+            <div class="box-body">
+                <p>First download a client</p>
+                <p>Second copy configuration text to config.json file</p>
+                <p>Start client programe</p>
+                <p>Mac or Linux:
+                  <pre>$ chmod +x muss-local
+$ ./muss-local -c config.json</pre>
+                </p>
+                <p>Windows:
+                  <pre>C:> muss-local.exe -c config.json</pre>
+                </p>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  </div>
+<!-- jQuery 2.2.3 -->
+<script src="/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="/static/plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/js/app.min.js"></script>
+<script src="/static/js/base.js"></script>
+</body>
+</html>

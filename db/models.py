@@ -54,12 +54,13 @@ class SSUser(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     servers_cache = models.CharField(max_length=1024, null=False, default="")
     number_server = models.IntegerField(null=False, default=1)
+    login_password = models.CharField(max_length=255, null=False, default="")
 
     class Meta:
         db_table = "user"
 
     @classmethod
-    def create(cls, name, servers, bandwidth):
+    def create(cls, name, servers, bandwidth, password):
         query = SSUser.objects.filter(name=name)
         if query.count() > 0:
             raise Exception("Name already exists")
@@ -69,8 +70,25 @@ class SSUser(models.Model):
         user = SSUser(userid=uid, name=name, status=SSUser.STATUS[0], number_server=servers, bandwidth=bandwidth)
         user.generate_password()
         user.auto_assign_servers(False)
+        user.set_password(password, False)
         user.save()
 
+    @classmethod
+    def authorization(cls, username, password):
+        hpassword = hashlib.sha256(password).hexdigest()
+        print username, hpassword
+        users = SSUser.objects.filter(name=username, status="Enabled", login_password=hpassword)
+        if len(users) == 0:
+            return None
+        return users[0]
+
+    def set_password(self, password, save=True):
+        h = hashlib.sha256(password)
+        self.login_password = h.hexdigest()
+        if save:
+            self.save()
+
+    # Override save method
     def save(self):
         super(SSUser, self).save()
         clean_cache(self.userid)
