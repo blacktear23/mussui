@@ -338,3 +338,20 @@
 
   }
 })(jQuery, $.AdminLTE);
+
+function get_csrf_token() {
+    return $("input[name='csrfmiddlewaretoken']").val();
+}
+
+function add_csrf_token(data) {
+    data["csrfmiddlewaretoken"] = get_csrf_token();
+    return data;
+}
+
+function render_error(data, prefix) {
+    for(k in data.responseJSON) {
+        var value = data.responseJSON[k];
+        var ielem = $(prefix + "" + k);
+        ielem.parent().parent().addClass("has-error");
+    }
+}

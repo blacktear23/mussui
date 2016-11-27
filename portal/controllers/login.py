@@ -21,3 +21,17 @@ def do_login(request):
 def do_logout(request):
     del request.session['user_id']
     return redirect("/login")
+
+
+@ulogin_required
+@require_POST
+def change_password(request):
+    password = request.POST['password']
+    confirm = request.POST['confirm']
+    if len(password) < 6:
+        return render_json({'password': "Password is too short"}, 400)
+    if password != confirm:
+        return render_json({'confirm': "Confirm is not equals to password"}, 400)
+    ssuser = request.ssuser
+    ssuser.set_password(password)
+    return render_200("OK")

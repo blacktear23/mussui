@@ -34,6 +34,11 @@
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <li>
+                    <a href="#" onclick="return change_password();">
+                      Change Password
+                    </a>
+                  </li>
+                  <li>
                     <a href="/logout">
                       Logout
                     </a>
@@ -153,6 +158,39 @@ $ ./muss-local -c config.json</pre>
     </section>
   </div>
   </div>
+  <!-- Change Passowrd -->
+  <div id="change-password-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="server-modal-title">Change Password</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="change-password-password" class="col-sm-2 control-label">Password</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="change-password-password" placeholder="Password">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="change-password-confirm" class="col-sm-2 control-label">Confirm</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="change-password-confirm" placeholder="Confirm">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="change-password-submit">Save</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 <!-- jQuery 2.2.3 -->
 <script src="/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -162,5 +200,35 @@ $ ./muss-local -c config.json</pre>
 <!-- AdminLTE App -->
 <script src="/static/js/app.min.js"></script>
 <script src="/static/js/base.js"></script>
+<script>
+function change_password() {
+    var emodal = $("#change-password-modal");
+    emodal.unbind("shown.bs.modal");
+    emodal.on("shown.bs.modal", function() {
+        $("#change-password-password").val("").focus();
+        $("#change-password-confirm").val("");
+    });
+    $("#change-password-submit").unbind("click");
+    $("#change-password-submit").click(function() {
+        var password = $("#change-password-password").val();
+        var confirm = $("#change-password-confirm").val()
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: "/change_password",
+            data: add_csrf_token({'password': password, 'confirm': confirm}),
+            statusCode: {
+                200: function() {
+                    window.location.reload(true);
+                },
+                400: function(data, text) {
+                    render_error(data, "#change-password-");
+                }
+            }
+        })
+    });
+    emodal.modal('show');
+}
+</script>
 </body>
 </html>

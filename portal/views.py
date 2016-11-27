@@ -14,6 +14,14 @@ def is_logined(request):
     return 'user_id' in request.session
 
 
+def render_200(msg="<h1>HTTP 200 OK</h1>"):
+    return HttpResponse(msg, status=200)
+
+
+def render_json(data, status=200):
+    return HttpResponse(json.dumps(data), content_type="text/json", status=status)
+
+
 def ulogin_required(func):
     @wraps(func)
     def _wrapper(request, *args, **kwargs):
