@@ -89,6 +89,8 @@ class SSUser(models.Model):
         return self.expire_date.strftime("%Y-%m-%d")
 
     def is_expire(self):
+        if self.expire_date is None:
+            return False
         now = datetime.now()
         return now > self.expire_date
 

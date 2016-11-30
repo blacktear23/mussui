@@ -235,6 +235,7 @@ function render_customer_modal(elem) {
                 if (data["is_expire"]) {
                     css = "text-red";
                 }
+                $(pfx+"expire").html("");
                 $(pfx+"expire").html(data["expire"]).attr("class", css);
             }
         }
