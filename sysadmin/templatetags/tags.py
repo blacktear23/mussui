@@ -30,4 +30,6 @@ def sidebar_active(request, target):
 
 @register.filter
 def fdate(value):
+    if value is None:
+        return ""
     return value.strftime("%Y-%m-%d %H:%M:%S")

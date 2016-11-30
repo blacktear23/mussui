@@ -72,6 +72,7 @@ def create(request):
 @login_required
 @require_POST
 def edit(request, id):
+    print request.POST
     ssuser = get_object_or_404(SSUser, pk=id)
     if 'bandwidth' not in request.POST:
         return render_400("require bandwidth parameter")
@@ -103,6 +104,8 @@ def edit(request, id):
             if dexpire is None:
                 return render_400("expire date is not valid")
             ssuser.expire_date = dexpire
+        else:
+            ssuser.expire_date = None
     ssuser.bandwidth = bandwidth
     if servers != ssuser.number_server:
         ssuser.number_server = servers

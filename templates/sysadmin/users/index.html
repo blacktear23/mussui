@@ -33,7 +33,7 @@
                   <th>Status</th>
                   <th>Bandwidth</th>
                   <th>MUSS Password</th>
-                  <th>Created At</th>
+                  <th>Expire At</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -51,7 +51,7 @@
                   </td>
                   <td>{{user.bandwidth}} Mbps</td>
                   <td>{{user.password}}</td>
-                  <td>{{user.created_at|fdate}}</td>
+                  <td>{{user.expire_date|fdate}}</td>
                   <td>
                     <a href="#" class="btn btn-info btn-xs" onclick="show_customer_config(this);" data-id="{{user.id}}">Config</a>
                     <a href="#" class="btn btn-info btn-xs" onclick="edit_customer(this);" data-id="{{user.id}}" data-servers="{{user.number_server}}" data-bandwidth="{{user.bandwidth}}" data-expire={{user.get_expire_str}}>Edit</a>
@@ -116,7 +116,7 @@
             <div class="form-group">
               <label for="create-customer-expire" class="col-sm-2 control-label">Expire Date</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="create-customer-expire" placeholder="Expire Date">
+                <input type="text" class="form-control" id="create-customer-expire">
               </div>
             </div>
           </div>
@@ -182,7 +182,7 @@
             <div class="form-group">
               <label for="edit-customer-expire" class="col-sm-2 control-label">Expire Date</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="edit-customer-expire" placeholder="Expire Date">
+                <input type="text" class="form-control" id="edit-customer-expire">
               </div>
             </div>
           </div>
