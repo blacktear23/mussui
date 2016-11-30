@@ -54,7 +54,7 @@ install_rotate() {
 
 install_billing() {
     # Every day 1:00 AM
-    install_cron "rotate" "0 1 * * *"
+    install_cron "billing" "0 1 * * *"
 }
 
 case $1 in
