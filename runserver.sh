@@ -52,6 +52,11 @@ install_rotate() {
     install_cron "rotate" "0 3 * * *"
 }
 
+install_billing() {
+    # Every day 1:00 AM
+    install_cron "rotate" "0 1 * * *"
+}
+
 case $1 in
     start-web):
         start_web
@@ -68,7 +73,10 @@ case $1 in
     install-rotate)
         install_rotate
         ;;
+    install-billing)
+        install_billing
+        ;;
     *)
-        echo "Usage: $SCRIPT_NAME (start-web|stop-web|restart-web|migrate)"
+        echo "Usage: $SCRIPT_NAME (start-web|stop-web|restart-web|migrate|install-rotate|install-billing)"
         ;;
 esac

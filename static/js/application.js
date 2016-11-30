@@ -20,11 +20,12 @@ function create_customer(elem) {
         var servers = $("#create-customer-servers").val();
         var bandwidth = $("#create-customer-bandwidth").val();
         var password = $("#create-customer-password").val();
+        var expire = $("#create-customer-expire").val();
         $.ajax({
             async: false,
             type: "POST",
             url: url,
-            data: add_csrf_token({'name': name, 'servers': servers, 'bandwidth': bandwidth, 'password': password}),
+            data: add_csrf_token({'name': name, 'servers': servers, 'bandwidth': bandwidth, 'password': password, 'expire': expire}),
             statusCode: {
                 200: function() {
                     window.location.reload(true);
@@ -39,6 +40,40 @@ function create_customer(elem) {
     return false;
 }
 
+function edit_customer(elem) {
+    var elem = $(elem);
+    var emodal = $("#edit-customer-modal");
+    var pfx = "#edit-customer-";
+    emodal.unbind("show.bs.modal");
+    emodal.on("show.bs.modal", function() {
+        $(pfx+"servers").val(elem.data("servers"));
+        $(pfx+"bandwidth").val(elem.data("bandwidth")).focus();
+        $(pfx+"expire").val(elem.data("expire"));
+    });
+    $(pfx+"submit").unbind("click");
+    $(pfx+"submit").click(function() {
+        var url = "/admin/customers/" + elem.data("id") + "/edit";
+        var servers = $(pfx+"servers").val();
+        var bandwidth = $(pfx+"bandwidth").val();
+        var password = $(pfx+"password").val();
+        var expire = $(pfx+"expire").val();
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: url,
+            data: add_csrf_token({'servers': servers, 'bandwidth': bandwidth, 'password': password, 'expire': expire}),
+            statusCode: {
+                200: function() {
+                    window.location.reload(true);
+                },
+                400: function(data, text) {
+                    alert(data.responseText);
+                }
+            }
+        });
+    });
+    emodal.modal("show");
+}
 
 function create_server(elem) {
     var elem = $(elem);
@@ -196,6 +231,11 @@ function render_customer_modal(elem) {
                     servers_html += '<div><span style="min-width:100px;padding-right:5px;">Encryption: ' + item[2].toUpperCase() + '</span><span>IP: ' + item[1] + "</span></div>";
                 }
                 $(pfx+"servers").html(servers_html);
+                var css = "text-green";
+                if (data["is_expire"]) {
+                    css = "text-red";
+                }
+                $(pfx+"expire").html(data["expire"]).attr("class", css);
             }
         }
     });
@@ -406,39 +446,6 @@ function show_customer_config(elem) {
                 }
             }
         })
-    });
-    emodal.modal("show");
-}
-
-function edit_customer(elem) {
-    var elem = $(elem);
-    var emodal = $("#edit-customer-modal");
-    var pfx = "#edit-customer-";
-    emodal.unbind("show.bs.modal");
-    emodal.on("show.bs.modal", function() {
-        $(pfx+"servers").val(elem.data("servers"));
-        $(pfx+"bandwidth").val(elem.data("bandwidth")).focus();
-    });
-    $(pfx+"submit").unbind("click");
-    $(pfx+"submit").click(function() {
-        var url = "/admin/customers/" + elem.data("id") + "/edit";
-        var servers = $(pfx+"servers").val();
-        var bandwidth = $(pfx+"bandwidth").val();
-        var password = $(pfx+"password").val();
-        $.ajax({
-            async: false,
-            type: "POST",
-            url: url,
-            data: add_csrf_token({'servers': servers, 'bandwidth': bandwidth, 'password': password}),
-            statusCode: {
-                200: function() {
-                    window.location.reload(true);
-                },
-                400: function(data, text) {
-                    alert(data.responseText);
-                }
-            }
-        });
     });
     emodal.modal("show");
 }

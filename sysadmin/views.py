@@ -63,6 +63,22 @@ def render_form_error(form):
     return render_json(ret, 400)
 
 
+def parse_datetime(value):
+    formats = [
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%d %H:%M",
+        "%Y-%m-%dT%H:%M",
+        "%Y-%m-%d",
+    ]
+    for fmt in formats:
+        try:
+            return datetime.strptime(value, fmt)
+        except:
+            pass
+    return None
+
+
 def paginate(request, query, per_page=30):
     # if we got a empty query then just return it
     try:

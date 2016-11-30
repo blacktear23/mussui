@@ -55,19 +55,20 @@ class SSUser(models.Model):
     servers_cache = models.CharField(max_length=1024, null=False, default="")
     number_server = models.IntegerField(null=False, default=1)
     login_password = models.CharField(max_length=255, null=False, default="")
+    expire_date = models.DateTimeField(null=True)
 
     class Meta:
         db_table = "user"
 
     @classmethod
-    def create(cls, name, servers, bandwidth, password):
+    def create(cls, name, servers, bandwidth, password, expire=None):
         query = SSUser.objects.filter(name=name)
         if query.count() > 0:
             raise Exception("Name already exists")
         uid = generate_user_id()
         if uid is None:
             raise Exception("Cannot generate userid")
-        user = SSUser(userid=uid, name=name, status=SSUser.STATUS[0], number_server=servers, bandwidth=bandwidth)
+        user = SSUser(userid=uid, name=name, status=SSUser.STATUS[0], number_server=servers, bandwidth=bandwidth, expire_date=expire)
         user.generate_password()
         user.auto_assign_servers(False)
         user.set_password(password, False)
@@ -81,6 +82,15 @@ class SSUser(models.Model):
         if len(users) == 0:
             return None
         return users[0]
+
+    def get_expire_str(self):
+        if self.expire_date is None:
+            return ""
+        return self.expire_date.strftime("%Y-%m-%d")
+
+    def is_expire(self):
+        now = datetime.now()
+        return now > self.expire_date
 
     def set_password(self, password, save=True):
         h = hashlib.sha256(password)

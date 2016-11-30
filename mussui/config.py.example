@@ -9,3 +9,10 @@ DATABASE = {
     "host": "127.0.0.1",
     "port": 3306,
 }
+
+REDIS = {
+    'host': '127.0.0.1',
+    'port': 6379,
+    'db': 0,
+    'use': True,
+}

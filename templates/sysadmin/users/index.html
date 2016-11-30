@@ -54,7 +54,7 @@
                   <td>{{user.created_at|fdate}}</td>
                   <td>
                     <a href="#" class="btn btn-info btn-xs" onclick="show_customer_config(this);" data-id="{{user.id}}">Config</a>
-                    <a href="#" class="btn btn-info btn-xs" onclick="edit_customer(this);" data-id="{{user.id}}" data-servers="{{user.number_server}}" data-bandwidth="{{user.bandwidth}}">Edit</a>
+                    <a href="#" class="btn btn-info btn-xs" onclick="edit_customer(this);" data-id="{{user.id}}" data-servers="{{user.number_server}}" data-bandwidth="{{user.bandwidth}}" data-expire={{user.get_expire_str}}>Edit</a>
                     {% if user.status == "Disabled" %}
                     <a href="/admin/customers/{{user.id}}/enable" class="btn btn-success btn-xs">Enable</a>
                     {% else %}
@@ -111,6 +111,12 @@
                   <option>2</option>
                   <option>3</option>
                 </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="create-customer-expire" class="col-sm-2 control-label">Expire Date</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="create-customer-expire" placeholder="Expire Date">
               </div>
             </div>
           </div>
@@ -173,6 +179,12 @@
                 </select>
               </div>
             </div>
+            <div class="form-group">
+              <label for="edit-customer-expire" class="col-sm-2 control-label">Expire Date</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="edit-customer-expire" placeholder="Expire Date">
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -185,3 +197,10 @@
 </div><!-- /.modal -->
 {% include "sysadmin/users/detail_modal.html" %}
 {% endblock %}
+{% block script %}
+$(function() {
+    $("#create-customer-expire").datepicker({autoclose: true, format: "yyyy-mm-dd", zIndex: 2000});
+    $("#edit-customer-expire").datepicker({autoclose: true, format: "yyyy-mm-dd", zIndex: 2000});
+});
+{% endblock %}
+

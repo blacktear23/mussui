@@ -53,8 +53,17 @@ def create(request):
     name = request.POST['name']
     if name == "":
         return render_400("Name should not empty")
+    dexpire = None
+    if 'expire' in request.POST:
+        expire = request.POST['expire']
+        if expire != "":
+            dexpire = parse_datetime(expire)
+            if dexpire is None:
+                return render_400("expire date is not valid")
+            if dexpire < datetime.now():
+                return render_400("expire date is before today")
     try:
-        SSUser.create(name, servers, bandwidth, password)
+        ssuser = SSUser.create(name, servers, bandwidth, password, dexpire)
     except Exception as e:
         return render_400("%s" % e)
     return render_200("OK")
@@ -87,6 +96,13 @@ def edit(request, id):
         if len(password) < 6:
             return render_400("password should not less than 6 character")
         ssuser.set_password(password, False)
+    if 'expire' in request.POST:
+        expire = request.POST['expire']
+        if expire != "":
+            dexpire = parse_datetime(expire)
+            if dexpire is None:
+                return render_400("expire date is not valid")
+            ssuser.expire_date = dexpire
     ssuser.bandwidth = bandwidth
     if servers != ssuser.number_server:
         ssuser.number_server = servers
@@ -102,6 +118,8 @@ def render_ssuser(user):
         'status': user.status,
         'password': user.password,
         'servers': servers,
+        'expire': user.get_expire_str(),
+        'is_expire': user.is_expire(),
     }
     return ret
 
