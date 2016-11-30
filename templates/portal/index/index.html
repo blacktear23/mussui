@@ -25,6 +25,9 @@
       <!-- Sidebar toggle button-->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          {% if user.expire_date %}
+          <li><a>Expire At: {{user.get_expire_str}}</a></li>
+          {% endif %}
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Hello&nbsp;{{user.name}}&nbsp;&nbsp;<i class="fa fa-user"></i>
