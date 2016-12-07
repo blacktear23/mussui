@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Muss UI Admin</title>
+  <title>Muss UI</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   {% include "sysadmin/layout/css.html" %}
@@ -58,73 +58,6 @@
     <section class="content">
       <div class="row">
         <div class="col-md-offset-1 col-md-10">
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Download</h3>
-            </div>
-            <div class="box-body">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <div class="box box-solid">
-                        <div class="box-header with-border">
-                          <i class="fa fa-windows"></i>
-                          <h3 class="box-title">Windows Version</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                          <a class="btn btn-primary col-md-12" href="/static/download/windows/muss-local.exe">
-                            <i class="fa fa-download"></i>
-                            Download muss-local.exe
-                          </a>
-                        </div>
-                        <!-- /.box-body -->
-                      </div>
-                      <!-- /.box -->
-                    </div>
-
-                    <div class="col-md-4">
-                      <div class="box box-solid">
-                        <div class="box-header with-border">
-                          <i class="fa fa-linux"></i>
-                          <h3 class="box-title">Linux Version</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                          <a class="btn btn-success col-md-12" href="/static/download/linux/muss-local">
-                            <i class="fa fa-download"></i>
-                            Download muss-local
-                          </a>
-                        </div>
-                        <!-- /.box-body -->
-                      </div>
-                      <!-- /.box -->
-                    </div>
-
-                    <div class="col-md-4">
-                      <div class="box box-solid">
-                        <div class="box-header with-border">
-                          <i class="fa fa-apple"></i>
-                          <h3 class="box-title">Mac Version</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                          <a class="btn btn-info col-md-12" href="/static/download/mac/muss-local">
-                            <i class="fa fa-download"></i>
-                            Download muss-local
-                          </a>
-                        </div>
-                        <!-- /.box-body -->
-                      </div>
-                      <!-- /.box -->
-                    </div>
-                  </div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-offset-1 col-md-10">
           <div class="box box-success">
             <div class="box-header with-border">
               <h3 class="box-title">Configuration</h3>
@@ -136,28 +69,34 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row"><!-- Begin Help Tabs -->
         <div class="col-md-offset-1 col-md-10">
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Usage</h3>
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <a href="#mac-help" data-toggle="tab" aria-expanded="true"><i class="fa fa-apple"></i> Mac</a>
+              </li>
+              <li>
+                <a href="#windows-help" data-toggle="tab" aria-expanded="true"><i class="fa fa-windows"></i> Windows</a>
+              </li>
+              <li>
+                <a href="#linux-help" data-toggle="tab" aria-expanded="true"><i class="fa fa-linux"></i> Linux</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+                <div id="mac-help" class="tab-pane active">
+                  {% include "portal/index/mac_help.html" %}
+                </div>
+                <div id="windows-help" class="tab-pane">
+                  {% include "portal/index/windows_help.html" %}
+                </div>
+                <div id="linux-help" class="tab-pane">
+                  {% include "portal/index/linux_help.html" %}
+                </div>
             </div>
-            <div class="box-body">
-                <p>First download a client</p>
-                <p>Second copy configuration text to config.json file</p>
-                <p>Start client programe</p>
-                <p>Mac or Linux:
-                  <pre>$ chmod +x muss-local
-$ ./muss-local -c config.json</pre>
-                </p>
-                <p>Windows:
-                  <pre>C:> muss-local.exe -c config.json</pre>
-                </p>
-            </div>
-            <!-- /.box-body -->
           </div>
         </div>
-      </div>
+      </div><!-- End Help Tabs -->
     </section>
   </div>
   </div>
