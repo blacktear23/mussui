@@ -134,7 +134,7 @@ class SSUser(models.Model):
         if self.servers_cache == "":
             self.auto_assign_servers()
         servers = json.loads(self.servers_cache)
-        query = Server.objects.filter(id__in=servers, status="Enabled")
+        query = Server.objects.filter(id__in=servers, status__in=["Enabled", "Full"])
         ret = []
         for server in query:
             ret.append([server.hostname, "%s:%s" % (server.ip, server.port), "%s-auth" % server.encryption])
@@ -164,6 +164,7 @@ class Server(models.Model):
     STATUS = [
         'Enabled',
         'Disabled',
+        'Full',
     ]
     hostname = models.CharField(max_length=255, null=False, db_index=True, unique=True)
     ip = models.GenericIPAddressField(null=False)
