@@ -12,7 +12,11 @@ def index(request):
         query = Server.objects.filter(filters)
     else:
         query = Server.objects.all()
-    num_server = int(request.license_config.get('numserver', 0))
+    num_server = 0
+    try:
+        num_server = int(request.license_config.get('numserver', 0))
+    except:
+        pass
     data = {
         "servers": paginate(request, query),
         "search": keyword,

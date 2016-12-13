@@ -18,11 +18,17 @@ def index(request):
     else:
         query = SSUser.objects.all()
 
-    num_user = int(request.license_config.get('numuser', 0))
+    num_user = 0
+    max_bw = 1
+    try:
+        num_user = int(request.license_config.get('numuser', 0))
+        max_bw = int(request.license_config.get("maxbw", 1))
+    except:
+        pass
     data = {
         "users": paginate(request, query),
         "search": keyword,
-        "default_bw": min(4, int(request.license_config.get("maxbw", 1))),
+        "default_bw": min(4, max_bw),
         "exceed": (SSUser.objects.count() >= num_user),
     }
     return render(request, "sysadmin/users/index.html", data)
