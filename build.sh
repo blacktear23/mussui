@@ -72,6 +72,14 @@ create_tarball() {
     cd $TARGET_DIR; tar zcf mussui.tar.gz mussui
 }
 
+copy_resources() {
+    RESOURCE_DIR=${TARGET_DIR}/resources
+    if [ -d $RESOURCE_DIR ]; then
+        echo "Copy Client Applications to Download"
+        cp -R ${RESOURCE_DIR}/* ${BUILD_DIR}static/download/
+    fi
+}
+
 process_build() {
     # Copy Source Code
     copy_source_code
@@ -80,6 +88,8 @@ process_build() {
     build_python_code
     # Clean Source Code
     clean_source_code
+    # Copy resources
+    copy_resources
     # Create Tarball
     create_tarball
 }
