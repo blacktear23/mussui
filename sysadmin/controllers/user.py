@@ -2,6 +2,7 @@ from sysadmin.views import *
 
 
 @login_required
+@load_license
 @active_page("customer")
 def index(request):
     keyword = ""
@@ -17,16 +18,27 @@ def index(request):
     else:
         query = SSUser.objects.all()
 
+    num_user = int(request.license_config.get('numuser', 0))
     data = {
         "users": paginate(request, query),
         "search": keyword,
+        "default_bw": min(4, int(request.license_config.get("maxbw", 1))),
+        "exceed": (SSUser.objects.count() >= num_user),
     }
     return render(request, "sysadmin/users/index.html", data)
 
 
 @login_required
+@load_license
 @require_POST
 def create(request):
+    if request.license_config is None:
+        return render_400("license is expired")
+    else:
+        num_user = int(request.license_config.get('numuser', 0))
+        if SSUser.objects.count() >= num_user:
+            return render_400("exceed number users quota")
+
     if 'name' not in request.POST:
         return render_400("require name parameter")
     if 'servers' not in request.POST:
@@ -43,6 +55,9 @@ def create(request):
         bandwidth = int(request.POST['bandwidth'])
         if bandwidth < 1:
             return render_400("Bandwidth should not less than 1")
+        max_bandwidth = int(request.license_config.get("maxbw", 1))
+        if bandwidth > max_bandwidth:
+            return render_400("Bandwidth exceed max bandwidth quota")
     except:
         return render_400("bandwidth parameter should be number")
     if 'password' not in request.POST:
@@ -70,9 +85,11 @@ def create(request):
 
 
 @login_required
+@load_license
 @require_POST
 def edit(request, id):
-    print request.POST
+    if request.license_config is None:
+        return render_400("license is expired")
     ssuser = get_object_or_404(SSUser, pk=id)
     if 'bandwidth' not in request.POST:
         return render_400("require bandwidth parameter")
@@ -80,6 +97,9 @@ def edit(request, id):
         bandwidth = int(request.POST['bandwidth'])
         if bandwidth < 1:
             return render_400("Bandwidth should not less than 1")
+        max_bandwidth = int(request.license_config.get("maxbw", 1))
+        if bandwidth > max_bandwidth:
+            return render_400("Bandwidth exceed max bandwidth quota")
     except:
         return render_400("bandwidth parameter should be number")
     if 'servers' not in request.POST:
@@ -90,8 +110,6 @@ def edit(request, id):
             return render_400("servers should not less than 1")
     except:
         return render_400("servers parameter should be number")
-    if 'bandwidth' not in request.POST:
-        return render_400("require bandwidth parameter")
     password = request.POST.get('password', '')
     if password != "":
         if len(password) < 6:
@@ -128,12 +146,14 @@ def render_ssuser(user):
 
 
 @login_required
+@load_license
 def details(request, id):
     user = get_object_or_404(SSUser, pk=id)
     return render_json(render_ssuser(user))
 
 
 @login_required
+@load_license
 def config(request, id):
     user = get_object_or_404(SSUser, pk=id)
     data = {
@@ -143,6 +163,7 @@ def config(request, id):
 
 
 @login_required
+@load_license
 def enable(request, id):
     user = get_object_or_404(SSUser, pk=id)
     user.enable()
@@ -150,6 +171,7 @@ def enable(request, id):
 
 
 @login_required
+@load_license
 def disable(request, id):
     user = get_object_or_404(SSUser, pk=id)
     user.disable()
@@ -157,6 +179,7 @@ def disable(request, id):
 
 
 @login_required
+@load_license
 def delete(request, id):
     user = get_object_or_404(SSUser, pk=id)
     user.delete()

@@ -28,6 +28,16 @@ def active_page(page):
     return active_page_wrapper
 
 
+def load_license(func):
+    @wraps(func)
+    def _wrapper(request, *args, **kwargs):
+        request.license = License.get_or_init()
+        if request.license is not None:
+            request.license_config = request.license.get_config()
+        return func(request, *args, **kwargs)
+    return _wrapper
+
+
 def render_200(msg="<h1>HTTP 200 OK</h1>"):
     return HttpResponse(msg, status=200)
 

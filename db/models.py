@@ -1,5 +1,7 @@
+import rsa
 import json
 import redis
+import base64
 import random
 import logging
 import hashlib
@@ -14,6 +16,18 @@ def generate_user_id(start=1000, end=99000):
         if SSUser.objects.filter(userid=uid).count() <= 0:
             return uid
     return None
+
+
+def load_public_key():
+    pk = """-----BEGIN RSA PUBLIC KEY-----
+MIIBCgKCAQEA11LzgDq5c2Ts3eSQ95wvt6Lqm5KT86X81ofTD23mZYoStX7qg4Qu
+TeT3UOrjcMzGJ/zFSkU0d+A9My5zlp4fN+wozuOXQHo/bbMDG46s2fMkHxT/h+kY
+sXUfJIURJ12N1FaSOhCSToIHCr9jbm7aQgECqPHTTQz1chl3BA2ggDPkD16gHxc1
+Up2a6GbONE5o0h/OpFsT3qJueNR2gYfkACiBONj2yY6YINyMgKDrKvcY5/nmi5zg
+HOKYis4QzQ4f3HmUyKfCrRkvWa0e+rZL6/nl0zcSk2338+zDV7zxkRa/iXxaDMee
+LclgkDFsEMY/3Ytfeiiz0mV4nqKdUMsAfQIDAQAB
+-----END RSA PUBLIC KEY-----"""
+    return rsa.PublicKey.load_pkcs1(pk)
 
 
 __REDIS_CONN_POOL__ = None
@@ -77,7 +91,6 @@ class SSUser(models.Model):
     @classmethod
     def authorization(cls, username, password):
         hpassword = hashlib.sha256(password).hexdigest()
-        print username, hpassword
         users = SSUser.objects.filter(name=username, status="Enabled", login_password=hpassword)
         if len(users) == 0:
             return None
@@ -173,3 +186,64 @@ class Server(models.Model):
     encryption = models.CharField(max_length=50, null=False, default="aes-128-cfb")
     comments = models.TextField(null=False, blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class License(models.Model):
+    fingerprint = models.CharField(max_length=255, null=False)
+    license = models.TextField(null=True, blank=True, default="")
+
+    @classmethod
+    def initial(cls):
+        query = License.objects.all()
+        if len(query) != 0:
+            l = query[0]
+            if l.fingerprint != "":
+                return
+        fingerprint = hashlib.sha1(str(datetime.now()) + str(random.random()))
+        license = License(fingerprint=fingerprint.hexdigest())
+        license.save()
+        return license
+
+    @classmethod
+    def get_or_init(cls):
+        license = License.get()
+        if license is None:
+            license = License.initial()
+        return license
+
+    @classmethod
+    def get(cls):
+        query = License.objects.all()
+        if len(query) > 0:
+            return query[0]
+        return None
+
+    def __load_config(self, data):
+        ret = {}
+        pairs = data.split("|")
+        for pair in pairs:
+            kvpair = pair.split(":")
+            if len(kvpair) != 2:
+                continue
+            key, value = kvpair
+            ret[key] = value
+        return ret
+
+    def get_config(self):
+        try:
+            data = self.__load_config(base64.decodestring(self.license))
+            pconf, sign = base64.decodestring(data['config']), base64.decodestring(data['sign'])
+            pubkey = load_public_key()
+            verify = rsa.verify(pconf + self.fingerprint, sign, pubkey)
+            if verify:
+                return self.__load_config(pconf)
+        except Exception, e:
+            pass
+        return None
+
+    def expired(self):
+        cfg = self.get_config()
+        if cfg is None or 'expire' not in cfg:
+            return True
+        expire = datetime.strptime(cfg['expire'], "%Y-%m-%d")
+        return expire <= datetime.now()

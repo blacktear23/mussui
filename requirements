@@ -2,3 +2,4 @@ django==1.8.16
 mysqlclient
 requests
 redis
+rsa

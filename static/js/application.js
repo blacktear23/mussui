@@ -450,3 +450,32 @@ function show_customer_config(elem) {
     });
     emodal.modal("show");
 }
+
+function update_license(elem) {
+    var elem = $(elem);
+    var url = elem.attr("post-url");
+    $("#license-modal").unbind("show.bs.modal");
+    $("#license-modal").on("show.bs.modal", function() {
+        $("#license-text").val("").focus();
+    })
+    $("#license-modal-submit").unbind("click")
+    $("#license-modal-submit").click(function() {
+        var license = $("#license-text").val();
+        $.ajax({
+            async: false,
+            type: "POST",
+            url: url,
+            data: add_csrf_token({"license": license}),
+            statusCode: {
+                200: function() {
+                    window.location.reload(true);
+                },
+                400: function(data, text) {
+                    alert(data.responseText);
+                }
+            }
+        });
+    });
+    $("#license-modal").modal("show");
+    return false;
+}

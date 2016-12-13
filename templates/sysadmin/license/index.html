@@ -1,0 +1,88 @@
+{% extends "sysadmin/layout/master.html" %}
+{% block content %}
+<section class="content-header">
+  <h1>License</h1>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+        {% csrf_token %}
+        <div class="box">
+          <div class="box-header with-border">
+            <h3 class="box-title">License</h3>
+            <div class="box-tools">
+              <form method="GET">
+              <div class="input-group input-group-sm" style="width: 20px;">
+                <div class="input-group-btn">
+                    <span post-url="/admin/license/update" class="btn btn-primary" onclick="return update_license(this);"><b>Update License</b></span>
+                </div>
+              </div>
+              </form>
+            </div>
+          </div>
+          <div class="box-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Finger Print</th>
+                  <th>Status</th>
+                  <th>Expire</th>
+                  <th>Number Users</th>
+                  <th>Number Servers</th>
+                  <th>Max Bandwidth</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{license.fingerprint}}</td>
+                  <td>
+                      {% if config %}
+                        {% if license.expired %}
+                            <span class="badge bg-yellow">Expired</span>
+                        {% else %}
+                            <span class="badge bg-green">OK</span>
+                        {% endif %}
+                      {% else %}
+                      <span class="badge bg-red">Not Valid</span>
+                      {% endif %}
+                  </td>
+                  <td>{{config.expire}}</td>
+                  <td>{{config.numuser}}</td>
+                  <td>{{config.numserver}}</td>
+                  <td>{{config.maxbw}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<div id="license-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="server-modal-title">Update License</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="box-body">
+            <div class="form-group">
+              <label for="server-hostname" class="col-sm-2 control-label">License</label>
+              <div class="col-sm-10">
+                  <textarea class="form-control" id="license-text" style="height:150px;"></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="license-modal-submit">Update</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}

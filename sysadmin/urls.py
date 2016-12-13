@@ -33,3 +33,8 @@ urlpatterns += patterns('sysadmin.controllers.server',
 urlpatterns += patterns('sysadmin.controllers.download',
     url(r'^download/?$', 'index'),
 )
+
+urlpatterns += patterns('sysadmin.controllers.license',
+    url(r'^license/?$', 'index'),
+    url(r'^license/update$', 'update'),
+)

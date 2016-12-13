@@ -14,7 +14,11 @@
               <form method="GET">
               <div class="input-group input-group-sm" style="width: 200px;">
                 <div class="input-group-btn">
+                    {% if exceed %}
+                    <span post-url="/admin/servers/create" class="btn btn-primary disabled"><b>Create</b></span>
+                    {% else %}
                     <span post-url="/admin/servers/create" class="btn btn-primary" onclick="return create_server(this);"><b>Create</b></span>
+                    {% endif %}
                 </div>
                 <input type="text" name="search" class="form-control pull-right" placeholder="Search" value="{{search}}">
                 <div class="input-group-btn">

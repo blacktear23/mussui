@@ -2,6 +2,7 @@ from sysadmin.views import *
 
 
 @login_required
+@load_license
 @active_page("server")
 def index(request):
     keyword = ""
@@ -11,17 +12,25 @@ def index(request):
         query = Server.objects.filter(filters)
     else:
         query = Server.objects.all()
-
+    num_server = int(request.license_config.get('numserver', 0))
     data = {
         "servers": paginate(request, query),
         "search": keyword,
+        "exceed": (Server.objects.count() >= num_server),
     }
     return render(request, "sysadmin/servers/index.html", data)
 
 
 @login_required
+@load_license
 @require_POST
 def create(request):
+    if request.license_config is None:
+        return render_json({"hostname": "license is expired"}, 400)
+    else:
+        num_server = int(request.license_config.get('numserver', 0))
+        if Server.objects.count() >= num_server:
+            return render_json({"hostname": "exceed number servers quota"}, 400)
     form = ServerForm(request.POST)
     if form.is_valid():
         server = Server()
@@ -31,6 +40,7 @@ def create(request):
 
 
 @login_required
+@load_license
 def detail(request, id):
     server = get_object_or_404(Server, pk=id)
     data = {
@@ -45,8 +55,11 @@ def detail(request, id):
 
 
 @login_required
+@load_license
 @require_POST
 def edit(request, id):
+    if request.license_config is None:
+        return render_json({"hostname": "license is expired"}, 400)
     server = get_object_or_404(Server, pk=id)
     form = ServerForm(request.POST)
     if form.is_valid():
@@ -56,6 +69,7 @@ def edit(request, id):
 
 
 @login_required
+@load_license
 def delete(request, id):
     server = get_object_or_404(Server, pk=id)
     server.delete()
