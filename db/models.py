@@ -5,6 +5,7 @@ import base64
 import random
 import logging
 import hashlib
+from uuid import getnode
 from datetime import datetime
 from django.db import models
 from mussui import config
@@ -199,8 +200,8 @@ class License(models.Model):
             l = query[0]
             if l.fingerprint != "":
                 return
-        fingerprint = hashlib.sha1(str(datetime.now()) + str(random.random()))
-        license = License(fingerprint=fingerprint.hexdigest())
+        license = License(fingerprint="")
+        license.check_finger_print()
         license.save()
         return license
 
@@ -215,8 +216,19 @@ class License(models.Model):
     def get(cls):
         query = License.objects.all()
         if len(query) > 0:
-            return query[0]
+            license = query[0]
+            license.check_finger_print()
+            return license
         return None
+
+    def check_finger_print(self):
+        finger_print = hashlib.sha1(str(getnode())).hexdigest()
+        if self.fingerprint == "":
+            self.fingerprint = finger_print
+        else:
+            if self.fingerprint != finger_print:
+                self.fingerprint = finger_print
+                self.save()
 
     def __load_config(self, data):
         ret = {}

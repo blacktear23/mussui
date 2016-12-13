@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 
 
 @login_required
+@load_license
 @active_page('dashboard')
 def index(request):
     data = {
