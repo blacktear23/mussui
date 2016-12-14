@@ -51,7 +51,6 @@ def validate_sign(request, user):
     sign.update(str(request.path) + "\n")
     sign.update(str(username) + "\n")
     hsign = sign.hexdigest()
-    print req_sign, hsign
     return req_sign == hsign
 
 
