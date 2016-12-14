@@ -1,4 +1,7 @@
 import json
+import hmac
+import hashlib
+from functools import wraps
 from datetime import datetime
 from django.shortcuts import *
 from django.db.models import Q
@@ -39,3 +42,33 @@ def render_json(data, status=200):
 
 def render_json_error(errormsg, status=400):
     return render_json({'error': errormsg}, status)
+
+
+def validate_sign(request, user):
+    username = request.POST['username']
+    req_sign = request.POST['sign'].lower()
+    sign = hmac.new(str(user.login_password), request.method.upper() + "\n", hashlib.sha1)
+    sign.update(str(request.path) + "\n")
+    sign.update(str(username) + "\n")
+    hsign = sign.hexdigest()
+    print req_sign, hsign
+    return req_sign == hsign
+
+
+def user_authorize(func):
+    @wraps(func)
+    def _wrapper(request, *args, **kwargs):
+        if 'username' not in request.POST:
+            return render_400("Require username parameter")
+        if 'sign' not in request.POST:
+            return render_400("Require sign parameter")
+        user = SSUser.get_by_name(request.POST['username'])
+        if user is None:
+            return render_404("Cannot find user")
+        if not validate_sign(request, user):
+            return render_403("Forbidden")
+        kwargs['user'] = user
+        return func(request, *args, **kwargs)
+
+    _wrapper.csrf_exempt = True
+    return _wrapper

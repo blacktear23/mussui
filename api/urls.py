@@ -5,3 +5,7 @@ urlpatterns = patterns('api.controllers.statistic',
     url(r'^statistic/bandwidth$', 'user_bandwidth'),
     url(r'^statistic/connection$', 'user_connection'),
 )
+
+urlpatterns += patterns('api.controllers.user',
+    url(r'^user/config$', 'config'),
+)

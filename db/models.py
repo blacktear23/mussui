@@ -90,6 +90,13 @@ class SSUser(models.Model):
         user.save()
 
     @classmethod
+    def get_by_name(cls, username):
+        query = SSUser.objects.filter(name=username, status="Enabled")
+        if len(query) == 0:
+            return None
+        return query[0]
+
+    @classmethod
     def authorization(cls, username, password):
         hpassword = hashlib.sha256(password).hexdigest()
         users = SSUser.objects.filter(name=username, status="Enabled", login_password=hpassword)
