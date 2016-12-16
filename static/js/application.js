@@ -8,8 +8,8 @@ function double_check() {
 function create_customer(elem) {
     var elem = $(elem);
     var url = elem.attr("post-url");
-    $("#create-customer-modal").unbind("show.bs.modal");
-    $("#create-customer-modal").on("show.bs.modal", function() {
+    $("#create-customer-modal").unbind("shown.bs.modal");
+    $("#create-customer-modal").on("shown.bs.modal", function() {
         $("#create-customer-name").val("").focus();
         $("#create-customer-servers").val(1);
         $("#create-customer-bandwidth").val(4);
@@ -44,8 +44,8 @@ function edit_customer(elem) {
     var elem = $(elem);
     var emodal = $("#edit-customer-modal");
     var pfx = "#edit-customer-";
-    emodal.unbind("show.bs.modal");
-    emodal.on("show.bs.modal", function() {
+    emodal.unbind("shown.bs.modal");
+    emodal.on("shown.bs.modal", function() {
         $(pfx+"servers").val(elem.data("servers"));
         $(pfx+"bandwidth").val(elem.data("bandwidth")).focus();
         $(pfx+"expire").val(elem.data("expire"));
