@@ -8,6 +8,10 @@ def login_index(request):
 
 
 def do_login(request):
+    if 'username' not in request.POST:
+        return render(request, 'portal/login/login.html', {'error_message': 'Login Error'})
+    if 'password' not in request.POST:
+        return render(request, 'portal/login/login.html', {'error_message': 'Login Error'})
     username = request.POST['username']
     password = request.POST['password']
     user = SSUser.authorization(username, password)
