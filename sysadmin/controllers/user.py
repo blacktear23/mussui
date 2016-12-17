@@ -1,4 +1,5 @@
 from sysadmin.views import *
+from django.utils.translation import ugettext as _
 
 
 @login_required
@@ -45,46 +46,46 @@ def create(request):
     else:
         num_user = int(request.license_config.get('numuser', 0))
         if SSUser.objects.count() >= num_user:
-            return render_400("exceed number users quota")
+            return render_400(_("exceed number users quota"))
 
     if 'name' not in request.POST:
-        return render_400("require name parameter")
+        return render_400(_("require name parameter"))
     if 'servers' not in request.POST:
-        return render_400("require servers parameter")
+        return render_400(_("require servers parameter"))
     try:
         servers = int(request.POST['servers'])
         if servers < 1:
-            return render_400("servers should not less than 1")
+            return render_400(_("servers should not less than 1"))
     except:
-        return render_400("servers parameter should be number")
+        return render_400(_("servers parameter should be number"))
     if 'bandwidth' not in request.POST:
-        return render_400("require bandwidth parameter")
+        return render_400(_("require bandwidth parameter"))
     try:
         bandwidth = int(request.POST['bandwidth'])
         if bandwidth < 1:
-            return render_400("Bandwidth should not less than 1")
+            return render_400(_("Bandwidth should not less than 1"))
         max_bandwidth = int(request.license_config.get("maxbw", 1))
         if bandwidth > max_bandwidth:
-            return render_400("Bandwidth exceed max bandwidth quota")
+            return render_400(_("Bandwidth exceed max bandwidth quota"))
     except:
-        return render_400("bandwidth parameter should be number")
+        return render_400(_("bandwidth parameter should be number"))
     if 'password' not in request.POST:
-        return render_400("require password parameter")
+        return render_400(_("require password parameter"))
     password = request.POST['password']
     if len(password) < 6:
-        return render_400("password should not less than 6 characters")
+        return render_400(_("password should not less than 6 characters"))
     name = request.POST['name']
     if name == "":
-        return render_400("Name should not empty")
+        return render_400(_("Name should not empty"))
     dexpire = None
     if 'expire' in request.POST:
         expire = request.POST['expire']
         if expire != "":
             dexpire = parse_datetime(expire)
             if dexpire is None:
-                return render_400("expire date is not valid")
+                return render_400(_("expire date is not valid"))
             if dexpire < datetime.now():
-                return render_400("expire date is before today")
+                return render_400(_("expire date is before today"))
     try:
         ssuser = SSUser.create(name, servers, bandwidth, password, dexpire)
     except Exception as e:
@@ -97,34 +98,34 @@ def create(request):
 @require_POST
 def edit(request, id):
     if request.license_config is None:
-        return render_400("license is expired")
+        return render_400(_("license is expired"))
     ssuser = get_object_or_404(SSUser, pk=id)
 
     if 'bandwidth' not in request.POST:
-        return render_400("require bandwidth parameter")
+        return render_400(_("require bandwidth parameter"))
     try:
         bandwidth = int(request.POST['bandwidth'])
         if bandwidth < 1:
-            return render_400("Bandwidth should not less than 1")
+            return render_400(_("Bandwidth should not less than 1"))
         max_bandwidth = int(request.license_config.get("maxbw", 1))
         if bandwidth > max_bandwidth:
-            return render_400("Bandwidth exceed max bandwidth quota")
+            return render_400(_("Bandwidth exceed max bandwidth quota"))
     except:
-        return render_400("bandwidth parameter should be number")
+        return render_400(_("bandwidth parameter should be number"))
 
     if 'servers' not in request.POST:
-        return render_400("require servers parameter")
+        return render_400(_("require servers parameter"))
     try:
         servers = int(request.POST['servers'])
         if servers < 1:
-            return render_400("servers should not less than 1")
+            return render_400(_("servers should not less than 1"))
     except:
-        return render_400("servers parameter should be number")
+        return render_400(_("servers parameter should be number"))
 
     password = request.POST.get('password', '')
     if password != "":
         if len(password) < 6:
-            return render_400("password should not less than 6 character")
+            return render_400(_("password should not less than 6 character"))
         ssuser.set_password(password, False)
 
     if 'expire' in request.POST:
@@ -132,7 +133,7 @@ def edit(request, id):
         if expire != "":
             dexpire = parse_datetime(expire)
             if dexpire is None:
-                return render_400("expire date is not valid")
+                return render_400(_("expire date is not valid"))
             ssuser.expire_date = dexpire
         else:
             ssuser.expire_date = None
@@ -140,7 +141,7 @@ def edit(request, id):
     if 'server_list' in request.POST:
         server_list = request.POST['server_list'].split(",")
         if len(server_list) > servers:
-            return render_400("you can choose no more than %d servers" % servers)
+            return render_400(_("you can choose no more than %d servers") % servers)
         # For now we just assign the server to servers
         if len(server_list) == servers:
             qserver = Server.objects.filter(id__in=server_list)

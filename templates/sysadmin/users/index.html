@@ -1,26 +1,26 @@
 {% extends "sysadmin/layout/master.html" %}
 {% block content %}
 <section class="content-header">
-  <h1>Customers</h1>
+    <h1>{% t "Customers" %}</h1>
 </section>
 <section class="content">
   <div class="row">
     <div class="col-md-12">
         {% csrf_token %}
-        <div class="box">
+        <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Customer List</h3>
+              <h3 class="box-title">{% t "Customer List" %}</h3>
             <div class="box-tools">
               <form method="GET">
               <div class="input-group input-group-sm" style="width: 200px;">
                 <div class="input-group-btn">
                     {% if exceed %}
-                    <span post-url="/admin/customers/create" class="btn btn-primary disabled"><b>Create</b></span>
+                    <span post-url="/admin/customers/create" class="btn btn-primary disabled"><b>{% t "Create" %}</b></span>
                     {% else %}
-                    <span post-url="/admin/customers/create" class="btn btn-primary" onclick="return create_customer(this);"><b>Create</b></span>
+                    <span post-url="/admin/customers/create" class="btn btn-primary" onclick="return create_customer(this);"><b>{% t "Create" %}</b></span>
                     {% endif %}
                 </div>
-                <input type="text" name="search" class="form-control pull-right" placeholder="Search" value="{{search}}">
+                <input type="text" name="search" class="form-control pull-right" placeholder="{% t "Search" %}" value="{{search}}">
                 <div class="input-group-btn">
                   <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                 </div>
@@ -32,13 +32,13 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>User ID</th>
-                  <th>Status</th>
-                  <th>Bandwidth</th>
-                  <th>MUSS Password</th>
-                  <th>Expire At</th>
-                  <th>Actions</th>
+                    <th>{% t "Name" %}</th>
+                    <th>{% t "User ID" %}</th>
+                    <th>{% t "Status" %}</th>
+                    <th>{% t "Bandwidth" %}</th>
+                    <th>{% t "Muss Password" %}</th>
+                    <th>{% t "Expire At" %}</th>
+                    <th>{% t "Actions" %}</th>
                 </tr>
               </thead>
               <tbody>
@@ -48,23 +48,23 @@
                   <td>{{user.userid}}</td>
                   <td>
                     {% if user.status == "Enabled" %}
-                    <span class="badge bg-green">{{user.status}}</span>
+                    <span class="badge bg-green">{% t user.status %}</span>
                     {% else %}
-                    <span class="badge bg-red">{{user.status}}</span>
+                    <span class="badge bg-red">{% t user.status %}</span>
                     {% endif %}
                   </td>
                   <td>{{user.bandwidth}} Mbps</td>
                   <td>{{user.password}}</td>
                   <td>{{user.expire_date|fdate}}</td>
                   <td>
-                    <a href="#" class="btn btn-info btn-xs" onclick="show_customer_config(this);" data-id="{{user.id}}">Config</a>
-                    <a href="#" class="btn btn-info btn-xs" onclick="edit_customer(this);" data-id="{{user.id}}" data-servers="{{user.number_server}}" data-bandwidth="{{user.bandwidth}}" data-expire="{{user.get_expire_str}}" data-server-ids="{{user.server_ids}}">Edit</a>
+                      <a href="#" class="btn btn-info btn-xs" onclick="show_customer_config(this);" data-id="{{user.id}}">{% t "Config" %}</a>
+                      <a href="#" class="btn btn-info btn-xs" onclick="edit_customer(this);" data-id="{{user.id}}" data-servers="{{user.number_server}}" data-bandwidth="{{user.bandwidth}}" data-expire="{{user.get_expire_str}}" data-server-ids="{{user.server_ids}}">{% t "Edit" %}</a>
                     {% if user.status == "Disabled" %}
-                    <a href="/admin/customers/{{user.id}}/enable" class="btn btn-success btn-xs">Enable</a>
+                    <a href="/admin/customers/{{user.id}}/enable" class="btn btn-success btn-xs">{% t "Enable" %}</a>
                     {% else %}
-                    <a href="/admin/customers/{{user.id}}/disable" class="btn btn-warning btn-xs">Disable</a>
+                    <a href="/admin/customers/{{user.id}}/disable" class="btn btn-warning btn-xs">{% t "Disable" %}</a>
                     {% endif %}
-                    <a href="/admin/customers/{{user.id}}/delete" class="btn btn-danger btn-xs" onclick="return double_check();">Delete</a>
+                    <a href="/admin/customers/{{user.id}}/delete" class="btn btn-danger btn-xs" onclick="return double_check(this);" data-confirm="{% t "Are you sure to delete?" %}">{% t "Delete" %}</a>
                   </td>
                 </tr>
                 {% endfor %}
@@ -79,36 +79,53 @@
   </div>
 </section>
 
+<div id="customer-config-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">{% t "Customer Config" %}</h4>
+      </div>
+      <div class="modal-body">
+          <pre id="customer-config-config" style="height:300px;"></pre>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">{% t "Close" %}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div id="create-customer-modal" class="modal fade" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="gridSystemModalLabel">Create Customer</h4>
+        <h4 class="modal-title" id="gridSystemModalLabel">{% t "Create Customer" %}</h4>
       </div>
       <div class="modal-body">
         <form class="form-horizontal">
           <div class="box-body">
             <div class="form-group">
-              <label for="create-customer-name" class="col-sm-2 control-label">Name</label>
+                <label for="create-customer-name" class="col-sm-2 control-label">{% t "Name" %}</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="create-customer-name" placeholder="Name">
+                  <input type="text" class="form-control" id="create-customer-name" placeholder="{% t "Name" %}">
               </div>
             </div>
             <div class="form-group">
-              <label for="create-customer-password" class="col-sm-2 control-label">Password</label>
+                <label for="create-customer-password" class="col-sm-2 control-label">{% t "Password" %}</label>
               <div class="col-sm-10">
-                <input type="password" class="form-control" id="create-customer-password" placeholder="Password">
+                  <input type="password" class="form-control" id="create-customer-password" placeholder="{% t "Password" %}">
               </div>
             </div>
             <div class="form-group">
-              <label for="create-customer-bandwidth" class="col-sm-2 control-label">Bandwidth</label>
+                <label for="create-customer-bandwidth" class="col-sm-2 control-label">{% t "Bandwidth" %}</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="create-customer-bandwidth" placeholder="Bandwidth">
+                  <input type="text" class="form-control" id="create-customer-bandwidth" placeholder="{% t "Bandwidth" %}">
               </div>
             </div>
             <div class="form-group">
-              <label for="create-customer-servers" class="col-sm-2 control-label">Servers</label>
+                <label for="create-customer-servers" class="col-sm-2 control-label">{% t "Servers" %}</label>
               <div class="col-sm-10">
                 <select class="form-control" id="create-customer-servers">
                   <option>1</option>
@@ -118,7 +135,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="create-customer-expire" class="col-sm-2 control-label">Expire Date</label>
+                <label for="create-customer-expire" class="col-sm-2 control-label">{% t "Expire Date" %}</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" id="create-customer-expire">
               </div>
@@ -127,54 +144,38 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="create-customer-submit">Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">{% t "Close" %}</button>
+          <button type="button" class="btn btn-primary" id="create-customer-submit">{% t "Save" %}</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div id="customer-config-modal" class="modal fade" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="gridSystemModalLabel">Customer Config</h4>
-      </div>
-      <div class="modal-body">
-          <pre id="customer-config-config" style="height:300px;"></pre>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
 <div id="edit-customer-modal" class="modal fade" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="gridSystemModalLabel">Edit Customer</h4>
+        <h4 class="modal-title" id="gridSystemModalLabel">{% t "Edit Customer" %}</h4>
       </div>
       <div class="modal-body">
         <form class="form-horizontal">
           <div class="box-body">
             <div class="form-group">
-              <label for="edit-customer-bandwidth" class="col-sm-2 control-label">Bandwidth</label>
+                <label for="edit-customer-bandwidth" class="col-sm-2 control-label">{% t "Bandwidth" %}</label>
               <div class="col-sm-10">
-                  <input type="text" class="form-control" id="edit-customer-bandwidth" placeholder="Bandwidth" value="{{default_bw}}">
+                  <input type="text" class="form-control" id="edit-customer-bandwidth" placeholder="{% t "Bandwidth" %}" value="{{default_bw}}">
               </div>
             </div>
             <div class="form-group">
-              <label for="edit-customer-password" class="col-sm-2 control-label">Password</label>
+                <label for="edit-customer-password" class="col-sm-2 control-label">{% t "Password" %}</label>
               <div class="col-sm-10">
-                <input type="password" class="form-control" id="edit-customer-password" placeholder="Password">
+                  <input type="password" class="form-control" id="edit-customer-password" placeholder="{% t "Password" %}">
               </div>
             </div>
             <div class="form-group">
-              <label for="edit-customer-servers" class="col-sm-2 control-label">Servers</label>
+                <label for="edit-customer-servers" class="col-sm-2 control-label">{% t "Servers" %}</label>
               <div class="col-sm-10">
                 <select class="form-control" id="edit-customer-servers">
                   <option>1</option>
@@ -184,7 +185,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label for "edit-customer-server-list" class="col-sm-2 control-label">Server List</label>
+                <label for "edit-customer-server-list" class="col-sm-2 control-label">{% t "Server List" %}</label>
               <div class="col-sm-10">
                 <select class="form-control" id="edit-customer-server-list" multiple="multiple">
                   {% for server in servers %}
@@ -194,7 +195,7 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="edit-customer-expire" class="col-sm-2 control-label">Expire Date</label>
+                <label for="edit-customer-expire" class="col-sm-2 control-label">{% t "Expire Date" %}</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" id="edit-customer-expire">
               </div>
@@ -203,8 +204,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="edit-customer-submit">Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">{% t "Close" %}</button>
+          <button type="button" class="btn btn-primary" id="edit-customer-submit">{% t "Save" %}</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -217,4 +218,3 @@ $(function() {
     $("#edit-customer-expire").datepicker({autoclose: true, format: "yyyy-mm-dd", zIndex: 2000});
 });
 {% endblock %}
-

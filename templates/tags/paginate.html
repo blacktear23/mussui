@@ -4,7 +4,7 @@
       {% if models.has_previous %}
         <a class="btn btn-xs btn-default" href="{% pager_url request models.previous_page_number %}">Prev</a>
       {% else %}
-        <span class="btn btn-default btn-xs disabled">Prev</span>
+      <span class="btn btn-default btn-xs disabled">{% t "Prev" %}</span>
       {% endif %}
       {% for k, v in request.GET.items %}
         <input type="hidden" name="{{k}}" value="{{v}}">
@@ -14,7 +14,7 @@
       {% if models.has_next %}
         <a class="btn btn-xs btn-default" href="{% pager_url request models.next_page_number %}">Next</a>
       {% else %}
-        <span class="btn btn-default btn-xs disabled">Next</span>
+      <span class="btn btn-default btn-xs disabled">{% t "Next" %}</span>
       {% endif %}
     </div>
   </form>

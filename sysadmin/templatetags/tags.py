@@ -5,6 +5,13 @@ from django.utils.translation import ugettext as _
 register = template.Library()
 
 
+@register.simple_tag
+def t(message):
+    if len(message) == 0:
+        return message
+    return _(message)
+
+
 @register.inclusion_tag('tags/paginate.html')
 def paginate(models, request):
     return {'models': models, 'request': request}

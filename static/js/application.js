@@ -1,5 +1,10 @@
-function double_check() {
-    if(confirm("Are you sure?")) {
+function double_check(elem) {
+    var msg = "Are you sure?";
+    var emsg = $(elem).data("confirm");
+    if(emsg != undefined && emsg != "") {
+        msg = emsg
+    }
+    if(confirm(msg)) {
         return true;
     }
     return false;
@@ -86,7 +91,7 @@ function create_server(elem) {
     var elem = $(elem);
     var url = elem.attr("post-url");
     var emodal = $("#server-modal");
-    $("#server-modal-title").html("Create Server");
+    $("#server-modal-title").html(emodal.data("msgcreate"));
     emodal.unbind("show.bs.modal");
     emodal.unbind("shown.bs.modal");
     emodal.on("show.bs.modal", function() {
@@ -162,7 +167,7 @@ function edit_server(elem) {
     var sid = elem.data("id");
     var emodal = $("#server-modal");
     var can_show = true;
-    $("#server-modal-title").html("Edit Server");
+    $("#server-modal-title").html(emodal.data("msgedit"));
     $.ajax({
         async: false,
         type: "GET",
@@ -233,9 +238,10 @@ function render_customer_modal(elem) {
         statusCode: {
             200: function(data) {
                 var servers_html = "";
+                var msg = $(pfx+"servers").data("msg");
                 for (var i in data['servers']) {
                     var item = data['servers'][i];
-                    servers_html += '<div><span style="min-width:100px;padding-right:5px;">Encryption: ' + item[2].toUpperCase() + '</span><span>IP: ' + item[1] + "</span></div>";
+                    servers_html += '<div><span style="min-width:100px;padding-right:5px;">' + msg + ': ' + item[2].toUpperCase() + '</span><span>IP: ' + item[1] + "</span></div>";
                 }
                 $(pfx+"servers").html(servers_html);
                 var css = "text-green";

@@ -8,3 +8,249 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
+
+msgid "Muss Admin Login"
+msgstr "Muss管理平台登录"
+
+msgid "User Name"
+msgstr "用户名"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Login"
+msgstr "登录"
+
+msgid "Login Error"
+msgstr "登录失败"
+
+msgid "Customers"
+msgstr "用户"
+
+msgid "Customer"
+msgstr "用户"
+
+msgid "Servers"
+msgstr "服务器"
+
+msgid "Admin"
+msgstr "管理平台"
+
+msgid "License Expired"
+msgstr "授权已过期"
+
+msgid "Change Password"
+msgstr "修改密码"
+
+msgid "Logout"
+msgstr "登出"
+
+msgid "Confirm"
+msgstr "确认密码"
+
+msgid "Close"
+msgstr "关闭"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "MAIN NAVIGATION"
+msgstr "主菜单"
+
+msgid "Online"
+msgstr "在线"
+
+msgid "Dashboard"
+msgstr "仪表板"
+
+msgid "Download"
+msgstr "下载"
+
+msgid "License"
+msgstr "授权"
+
+msgid "Customer List"
+msgstr "用户列表"
+
+msgid "Name"
+msgstr "用户名"
+
+msgid "User ID"
+msgstr "用户ID"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Bandwidth"
+msgstr "带宽"
+
+msgid "Muss Password"
+msgstr "Muss密码"
+
+msgid "Expire At"
+msgstr "到期日期"
+
+msgid "Actions"
+msgstr "操作"
+
+msgid "Enabled"
+msgstr "启用"
+
+msgid "Disabled"
+msgstr "禁用"
+
+msgid "Full"
+msgstr "已满"
+
+msgid "Customer Config"
+msgstr "用户配置信息"
+
+msgid "Config"
+msgstr "配置信息"
+
+msgid "Edit"
+msgstr "修改"
+
+msgid "Enable"
+msgstr "启用"
+
+msgid "Disable"
+msgstr "禁用"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "Server List"
+msgstr "服务器列表"
+
+msgid "Expire Date"
+msgstr "到期日期"
+
+msgid "Prev"
+msgstr "上一页"
+
+msgid "Next"
+msgstr "下一页"
+
+msgid "Create"
+msgstr "新建"
+
+msgid "Search"
+msgstr "搜索"
+
+msgid "Create Customer"
+msgstr "新建用户"
+
+msgid "Are you sure to delete?"
+msgstr "您确定要删除"
+
+msgid "Created At"
+msgstr "创建日期"
+
+msgid "Connections"
+msgstr "连接数"
+
+msgid "Encryption"
+msgstr "加密算法"
+
+msgid "exceed number users quota"
+msgstr "超出授权的用户上限"
+
+msgid "Bandwidth should not less than 1"
+msgstr "带宽不能小于1"
+
+msgid "Bandwidth exceed max bandwidth quota"
+msgstr "超出授权的带宽上限"
+
+msgid "bandwidth parameter should be number"
+msgstr "带宽必须是数字"
+
+msgid "password should not less than 6 characters"
+msgstr "密码不能少于6个字符"
+
+msgid "Name should not empty"
+msgstr "用户名不能为空"
+
+msgid "expire date is not valid"
+msgstr "过期日期不正确"
+
+msgid "expire date is before today"
+msgstr "过期日期在今天之前"
+
+msgid "servers should not less than 1"
+msgstr "服务器数量不能小于1"
+
+msgid "you can choose no more than %d servers"
+msgstr "无法选择多于%d个服务器"
+
+msgid "license is expired"
+msgstr "授权已过期"
+
+msgid "Hostname"
+msgstr "主机名"
+
+msgid "IP"
+msgstr "IP"
+
+msgid "Comments"
+msgstr "备注"
+
+msgid "Edit Server"
+msgstr "修改服务器"
+
+msgid "Encryption Method"
+msgstr "加密算法"
+
+msgid "Create Server"
+msgstr "新建服务器"
+
+msgid "Port"
+msgstr "端口"
+
+msgid "Download Client"
+msgstr "下载客户端"
+
+msgid "Windows Version"
+msgstr "Windows版本"
+
+msgid "Linux Version"
+msgstr "Linux版本"
+
+msgid "Mac Version"
+msgstr "Mac版本"
+
+msgid "Finger Print"
+msgstr "服务器注册码"
+
+msgid "Expire"
+msgstr "到期日期"
+
+msgid "Number Users"
+msgstr "可管理用户数量"
+
+msgid "Number Servers"
+msgstr "可管理服务器数量"
+
+msgid "Max Bandwidth"
+msgstr "可设置最大带宽"
+
+msgid "Update License"
+msgstr "更新授权码"
+
+msgid "Expired"
+msgstr "已过期"
+
+msgid "OK"
+msgstr "正常"
+
+msgid "Not Valid"
+msgstr "授权码错误"
+
+msgid "License Code"
+msgstr "授权码"
+
+msgid "Update"
+msgstr "更新"

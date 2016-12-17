@@ -1,5 +1,6 @@
 from sysadmin.views import *
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.utils.translation import ugettext as _
 
 
 @login_required
@@ -27,7 +28,7 @@ def do_login(request):
         if user.is_active:
             login(request, user)
             return redirect("/admin")
-    return render(request, 'sysadmin/login/login.html', {'error_message': 'Login Error'})
+    return render(request, 'sysadmin/login/login.html', {'error_message': _('Login Error')})
 
 
 @login_required
@@ -42,7 +43,7 @@ def change_password(request):
     password = request.POST['password']
     confirm = request.POST['confirm']
     if password != confirm:
-        return render_json({'confirm': "Confirm is not equals to password"}, 400)
+        return render_json({'confirm': _("Confirm is not equals to password")}, 400)
     user = request.user
     user.set_password(password)
     user.save()

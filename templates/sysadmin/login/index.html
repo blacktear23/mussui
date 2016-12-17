@@ -1,7 +1,7 @@
 {% extends "sysadmin/layout/master.html" %}
 {% block content %}
 <section class="content-header">
-  <h1>Dashboard</h1>
+    <h1>{% t Dashboard %}</h1>
 </section>
 <section class="content">
   <div class="row">
@@ -10,8 +10,8 @@
         <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
 
         <div class="info-box-content">
-          <span class="info-box-text">Customers</span>
-          <span class="info-box-number">{{number_customers}}</span>
+            <span class="info-box-text">{% t "Customers" %}</span>
+            <span class="info-box-number">{{number_customers}}</span>
         </div>
         <!-- /.info-box-content -->
       </div>
@@ -22,8 +22,8 @@
         <span class="info-box-icon bg-green"><i class="fa fa-server"></i></span>
 
         <div class="info-box-content">
-          <span class="info-box-text">Servers</span>
-          <span class="info-box-number">{{number_servers}}</span>
+            <span class="info-box-text">{% t "Servers" %}</span>
+            <span class="info-box-number">{{number_servers}}</span>
         </div>
         <!-- /.info-box-content -->
       </div>

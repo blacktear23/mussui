@@ -101,7 +101,7 @@ DATABASE_ROUTERS = ['db.router.MonitorRouter', ]
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = config.LANGUAGE
 
 TIME_ZONE = None
 
@@ -112,6 +112,9 @@ DATETIME_FORMAT = 'Y-m-d H:i:s'
 
 USE_TZ = False
 
+LOCALE_PATHS = (
+    os.path.join(os.path.dirname(__file__), '..', 'sysadmin', 'locale'),
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Muss UI Admin</title>
+  <title>Muss Admin</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   {% include "sysadmin/layout/css.html" %}
@@ -21,7 +21,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>Muss</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Muss</b> Admin UI</span>
+      <span class="logo-lg"><b>Muss</b> {%t "Admin" %}</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -35,7 +35,7 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           {% if request.license.expired %}
-          <li style="margin-top:15px;"><span class="badge bg-red">License Expired</span><li>
+          <li style="margin-top:15px;"><span class="badge bg-red">{% t "License Expired" %}</span><li>
           {% endif %}
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -47,12 +47,12 @@
                 <ul class="menu">
                   <li>
                     <a href="#" onclick="return change_password();">
-                      Change Password
+                      {% t "Change Password" %}
                     </a>
                   </li>
                   <li>
                     <a href="/admin/logout">
-                      Logout
+                        {% t "Logout" %}
                     </a>
                   </li>
                 </ul>
@@ -75,19 +75,19 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="server-modal-title">Change Password</h4>
+          <h4 class="modal-title" id="server-modal-title">{% t "Change Password" %}</h4>
         </div>
         <div class="modal-body">
           <form class="form-horizontal">
             <div class="box-body">
               <div class="form-group">
-                <label for="change-password-password" class="col-sm-2 control-label">Password</label>
+                  <label for="change-password-password" class="col-sm-2 control-label">{% t "Password" %}</label>
                 <div class="col-sm-10">
                   <input type="password" class="form-control" id="change-password-password" placeholder="Password">
                 </div>
               </div>
               <div class="form-group">
-                <label for="change-password-confirm" class="col-sm-2 control-label">Confirm</label>
+                  <label for="change-password-confirm" class="col-sm-2 control-label">{% t "Confirm" %}</label>
                 <div class="col-sm-10">
                   <input type="password" class="form-control" id="change-password-confirm" placeholder="Confirm">
                 </div>
@@ -96,8 +96,8 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="change-password-submit">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{% t "Close" %}</button>
+            <button type="button" class="btn btn-primary" id="change-password-submit">{% t "Save" %}</button>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

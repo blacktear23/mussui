@@ -1,26 +1,26 @@
 {% extends "sysadmin/layout/master.html" %}
 {% block content %}
 <section class="content-header">
-  <h1>Servers</h1>
+    <h1>{% t "Servers" %}</h1>
 </section>
 <section class="content">
   <div class="row">
     <div class="col-md-12">
         {% csrf_token %}
-        <div class="box">
+        <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Server List</h3>
+              <h3 class="box-title">{% t "Server List" %}</h3>
             <div class="box-tools">
               <form method="GET">
               <div class="input-group input-group-sm" style="width: 200px;">
                 <div class="input-group-btn">
                     {% if exceed %}
-                    <span post-url="/admin/servers/create" class="btn btn-primary disabled"><b>Create</b></span>
+                    <span post-url="/admin/servers/create" class="btn btn-primary disabled"><b>{% t "Create" %}</b></span>
                     {% else %}
-                    <span post-url="/admin/servers/create" class="btn btn-primary" onclick="return create_server(this);"><b>Create</b></span>
+                    <span post-url="/admin/servers/create" class="btn btn-primary" onclick="return create_server(this);"><b>{% t "Create" %}</b></span>
                     {% endif %}
                 </div>
-                <input type="text" name="search" class="form-control pull-right" placeholder="Search" value="{{search}}">
+                <input type="text" name="search" class="form-control pull-right" placeholder="{% t "Search" %}" value="{{search}}">
                 <div class="input-group-btn">
                   <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                 </div>
@@ -32,14 +32,14 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th>Hostname</th>
-                  <th>IP</th>
-                  <th>Status</th>
-                  <th>Encryption</th>
-                  <th>Customers</th>
-                  <th>Comments</th>
-                  <th>Created At</th>
-                  <th>Actions</th>
+                    <th>{% t "Hostname" %}</th>
+                    <th>{% t "IP" %}</th>
+                    <th>{% t "Status" %}</th>
+                    <th>{% t "Encryption" %}</th>
+                    <th>{% t "Customers" %}</th>
+                    <th>{% t "Comments" %}</th>
+                    <th>{% t "Created At" %}</th>
+                    <th>{% t "Actions" %}</th>
                 </tr>
               </thead>
               <tbody>
@@ -49,11 +49,11 @@
                   <td>{{server.ip}}:{{server.port}}</td>
                   <td>
                     {% if server.status == "Enabled" %}
-                    <span class="badge bg-green">{{server.status}}</span>
+                    <span class="badge bg-green">{% t server.status %}</span>
                     {% elif server.status == "Full" %}
-                    <span class="badge bg-yellow">{{server.status}}</span>
+                    <span class="badge bg-yellow">{% t server.status %}</span>
                     {% else %}
-                    <span class="badge bg-red">{{server.status}}</span>
+                    <span class="badge bg-red">{% t server.status %}</span>
                     {% endif %}
                   </td>
                   <td>{{server.encryption|upper}}</td>
@@ -61,8 +61,8 @@
                   <td>{{server.comments}}</td>
                   <td>{{server.created_at|fdate}}</td>
                   <td>
-                    <span post-url="/admin/servers/{{server.id}}/edit" data-id="{{server.id}}" class="btn btn-primary btn-xs" onclick="return edit_server(this);">Edit</span>
-                    <a href="/admin/servers/{{server.id}}/delete" class="btn btn-danger btn-xs" onclick="return double_check();">Delete</a>
+                      <span post-url="/admin/servers/{{server.id}}/edit" data-id="{{server.id}}" class="btn btn-primary btn-xs" onclick="return edit_server(this);">{% t "Edit" %}</span>
+                      <a href="/admin/servers/{{server.id}}/delete" class="btn btn-danger btn-xs" onclick="return double_check(this);" data-confirm="{% t "Are you sure to delete?" %}">{% t "Delete" %}</a>
                   </td>
                 </tr>
                 {% endfor %}
@@ -77,46 +77,46 @@
   </div>
 </section>
 
-<div id="server-modal" class="modal fade" role="dialog">
+<div id="server-modal" class="modal fade" role="dialog" data-msgcreate="{% t "Create Server" %}" data-msgedit="{% t "Edit Server" %}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="server-modal-title">Create Server</h4>
+        <h4 class="modal-title" id="server-modal-title">{% t "Create Server" %}</h4>
       </div>
       <div class="modal-body">
         <form class="form-horizontal">
           <div class="box-body">
             <div class="form-group">
-              <label for="server-hostname" class="col-sm-2 control-label">Hostname</label>
+                <label for="server-hostname" class="col-sm-2 control-label">{% t "Hostname" %}</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="server-hostname" placeholder="Hostname">
+                  <input type="text" class="form-control" id="server-hostname" placeholder="{% t "Hostname" %}">
               </div>
             </div>
             <div class="form-group">
-              <label for="server-ip" class="col-sm-2 control-label">IP</label>
+                <label for="server-ip" class="col-sm-2 control-label">{% t "IP" %}</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="server-ip" placeholder="IP">
+                  <input type="text" class="form-control" id="server-ip" placeholder="{% t "IP" %}">
               </div>
             </div>
             <div class="form-group">
-              <label for="server-port" class="col-sm-2 control-label">Port</label>
+                <label for="server-port" class="col-sm-2 control-label">{% t "Port" %}</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="server-port" placeholder="Port">
+                  <input type="text" class="form-control" id="server-port" placeholder="{% t "Port" %}">
               </div>
             </div>
             <div class="form-group">
-              <label for="server-status" class="col-sm-2 control-label">Status</label>
+                <label for="server-status" class="col-sm-2 control-label">{% t "Status" %}</label>
               <div class="col-sm-10">
                 <select id="server-status" class="form-control">
-                    <option value="Enabled">Enabled</option>
-                    <option value="Full">Full</option>
-                    <option value="Disabled">Disabled</option>
+                    <option value="Enabled">{% t "Enabled" %}</option>
+                    <option value="Full">{% t "Full" %}</option>
+                    <option value="Disabled">{% t "Disabled" %}</option>
                 </select>
               </div>
             </div>
             <div class="form-group">
-              <label for="server-encryption" class="col-sm-2 control-label">Encryption Method</label>
+                <label for="server-encryption" class="col-sm-2 control-label">{% t "Encryption Method" %}</label>
               <div class="col-sm-10">
                 <select id="server-encryption" class="form-control">
                     <option value="aes-128-cfb">AES-128-CFB</option>
@@ -127,10 +127,10 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="server-comments" class="col-sm-2 control-label">Comments</label>
+                <label for="server-comments" class="col-sm-2 control-label">{% t "Comments" %}</label>
 
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="server-comments" placeholder="Comments">
+                  <input type="text" class="form-control" id="server-comments" placeholder="{% t "Comments" %}">
               </div>
             </div>
 
@@ -138,8 +138,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="server-modal-submit">Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">{% t "Close" %}</button>
+          <button type="button" class="btn btn-primary" id="server-modal-submit">{% t "Save" %}</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
