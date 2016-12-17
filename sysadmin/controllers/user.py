@@ -25,9 +25,11 @@ def index(request):
         max_bw = int(request.license_config.get("maxbw", 1))
     except:
         pass
+    servers = Server.objects.filter(status__in=["Enabled", "Full"])
     data = {
         "users": paginate(request, query),
         "search": keyword,
+        "servers": servers,
         "default_bw": min(4, max_bw),
         "exceed": (SSUser.objects.count() >= num_user),
     }
@@ -97,6 +99,7 @@ def edit(request, id):
     if request.license_config is None:
         return render_400("license is expired")
     ssuser = get_object_or_404(SSUser, pk=id)
+
     if 'bandwidth' not in request.POST:
         return render_400("require bandwidth parameter")
     try:
@@ -108,6 +111,7 @@ def edit(request, id):
             return render_400("Bandwidth exceed max bandwidth quota")
     except:
         return render_400("bandwidth parameter should be number")
+
     if 'servers' not in request.POST:
         return render_400("require servers parameter")
     try:
@@ -116,11 +120,13 @@ def edit(request, id):
             return render_400("servers should not less than 1")
     except:
         return render_400("servers parameter should be number")
+
     password = request.POST.get('password', '')
     if password != "":
         if len(password) < 6:
             return render_400("password should not less than 6 character")
         ssuser.set_password(password, False)
+
     if 'expire' in request.POST:
         expire = request.POST['expire']
         if expire != "":
@@ -130,10 +136,24 @@ def edit(request, id):
             ssuser.expire_date = dexpire
         else:
             ssuser.expire_date = None
+
+    if 'server_list' in request.POST:
+        server_list = request.POST['server_list'].split(",")
+        if len(server_list) > servers:
+            return render_400("you can choose no more than %d servers" % servers)
+        # For now we just assign the server to servers
+        if len(server_list) == servers:
+            qserver = Server.objects.filter(id__in=server_list)
+            ssuser.replace_servers(qserver)
+            if servers != ssuser.number_server:
+                ssuser.number_server = servers
+        else:
+            # assigned server is less than just call auto assign
+            if servers != ssuser.number_server:
+                ssuser.number_server = servers
+                ssuser.auto_assign_servers()
+
     ssuser.bandwidth = bandwidth
-    if servers != ssuser.number_server:
-        ssuser.number_server = servers
-        ssuser.auto_assign_servers(False)
     ssuser.save()
     return render_200("OK")
 

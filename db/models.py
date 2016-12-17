@@ -71,6 +71,7 @@ class SSUser(models.Model):
     number_server = models.IntegerField(null=False, default=1)
     login_password = models.CharField(max_length=255, null=False, default="")
     expire_date = models.DateTimeField(null=True)
+    servers = models.ManyToManyField("Server")
 
     class Meta:
         db_table = "user"
@@ -85,9 +86,9 @@ class SSUser(models.Model):
             raise Exception("Cannot generate userid")
         user = SSUser(userid=uid, name=name, status=SSUser.STATUS[0], number_server=servers, bandwidth=bandwidth, expire_date=expire)
         user.generate_password()
-        user.auto_assign_servers(False)
         user.set_password(password, False)
         user.save()
+        user.auto_assign_servers()
 
     @classmethod
     def get_by_name(cls, username):
@@ -115,6 +116,21 @@ class SSUser(models.Model):
         now = datetime.now()
         return now > self.expire_date
 
+    def server_ids(self):
+        return ",".join([str(server.id) for server in self.servers.all()])
+
+    def replace_servers(self, new_servers):
+        self_servers = [s.id for s in self.servers.all()]
+        need_replace = False
+        for ns in new_servers:
+            if ns.id not in self_servers:
+                need_replace = True
+                break
+        if need_replace:
+            self.servers.clear()
+            for ns in new_servers:
+                self.servers.add(ns)
+
     def set_password(self, password, save=True):
         h = hashlib.sha256(password)
         self.login_password = h.hexdigest()
@@ -139,23 +155,20 @@ class SSUser(models.Model):
         self.status = SSUser.STATUS[1]
         self.save()
 
-    def auto_assign_servers(self, save=True):
+    def auto_assign_servers(self):
+        self.servers.clear()
         servers = list(Server.objects.filter(status="Enabled"))
         ret = set()
         loop_times = min(self.number_server, len(servers))
         random.shuffle(servers)
         for i in range(loop_times):
             server = servers[i]
-            ret.add(server.id)
-        self.servers_cache = json.dumps(list(ret))
-        if save:
-            self.save()
+            self.servers.add(server)
 
     def get_servers(self):
-        if self.servers_cache == "":
+        if self.servers.count() == 0:
             self.auto_assign_servers()
-        servers = json.loads(self.servers_cache)
-        query = Server.objects.filter(id__in=servers, status__in=["Enabled", "Full"])
+        query = self.servers.filter(status__in=['Enabled', 'Full'])
         ret = []
         for server in query:
             ret.append([server.hostname, "%s:%s" % (server.ip, server.port), "%s-auth" % server.encryption])

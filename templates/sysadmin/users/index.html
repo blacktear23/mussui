@@ -44,7 +44,7 @@
               <tbody>
                 {% for user in users %}
                 <tr>
-                    <td><a href="#" onclick="show_customer_detail(this);" data-userid="{{user.userid}}" data-name="{{user.name}}", data-status="{{user.status}}" data-password="{{user.password}}" data-created_at="{{user.created_at|fdate}}" data-id={{user.id}}>{{user.name}}</td>
+                    <td><a href="#" onclick="show_customer_detail(this);" data-userid="{{user.userid}}" data-name="{{user.name}}", data-status="{{user.status}}" data-password="{{user.password}}" data-created_at="{{user.created_at|fdate}}" data-id="{{user.id}}">{{user.name}}</td>
                   <td>{{user.userid}}</td>
                   <td>
                     {% if user.status == "Enabled" %}
@@ -58,7 +58,7 @@
                   <td>{{user.expire_date|fdate}}</td>
                   <td>
                     <a href="#" class="btn btn-info btn-xs" onclick="show_customer_config(this);" data-id="{{user.id}}">Config</a>
-                    <a href="#" class="btn btn-info btn-xs" onclick="edit_customer(this);" data-id="{{user.id}}" data-servers="{{user.number_server}}" data-bandwidth="{{user.bandwidth}}" data-expire={{user.get_expire_str}}>Edit</a>
+                    <a href="#" class="btn btn-info btn-xs" onclick="edit_customer(this);" data-id="{{user.id}}" data-servers="{{user.number_server}}" data-bandwidth="{{user.bandwidth}}" data-expire="{{user.get_expire_str}}" data-server-ids="{{user.server_ids}}">Edit</a>
                     {% if user.status == "Disabled" %}
                     <a href="/admin/customers/{{user.id}}/enable" class="btn btn-success btn-xs">Enable</a>
                     {% else %}
@@ -180,6 +180,16 @@
                   <option>1</option>
                   <option>2</option>
                   <option>3</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for "edit-customer-server-list" class="col-sm-2 control-label">Server List</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="edit-customer-server-list" multiple="multiple">
+                  {% for server in servers %}
+                  <option value="{{server.id}}">{{server.hostname}}</option>
+                  {% endfor %}
                 </select>
               </div>
             </div>

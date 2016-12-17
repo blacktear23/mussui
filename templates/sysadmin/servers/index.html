@@ -35,7 +35,8 @@
                   <th>Hostname</th>
                   <th>IP</th>
                   <th>Status</th>
-                  <th>Encryption Method</th>
+                  <th>Encryption</th>
+                  <th>Customers</th>
                   <th>Comments</th>
                   <th>Created At</th>
                   <th>Actions</th>
@@ -56,6 +57,7 @@
                     {% endif %}
                   </td>
                   <td>{{server.encryption|upper}}</td>
+                  <td>{{server.ssuser_set.count}}</td>
                   <td>{{server.comments}}</td>
                   <td>{{server.created_at|fdate}}</td>
                   <td>

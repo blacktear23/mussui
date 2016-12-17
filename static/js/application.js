@@ -49,6 +49,11 @@ function edit_customer(elem) {
         $(pfx+"servers").val(elem.data("servers"));
         $(pfx+"bandwidth").val(elem.data("bandwidth")).focus();
         $(pfx+"expire").val(elem.data("expire"));
+        var server_ids = elem.data("serverIds") + "";
+        if (server_ids) {
+            var server_arr = server_ids.split(",");
+            $(pfx+"server-list").val(server_arr);
+        }
     });
     $(pfx+"submit").unbind("click");
     $(pfx+"submit").click(function() {
@@ -57,11 +62,13 @@ function edit_customer(elem) {
         var bandwidth = $(pfx+"bandwidth").val();
         var password = $(pfx+"password").val();
         var expire = $(pfx+"expire").val();
+        var server_ids = $(pfx+"server-list").val();
+        var server_ids_str = server_ids.join(",");
         $.ajax({
             async: false,
             type: "POST",
             url: url,
-            data: add_csrf_token({'servers': servers, 'bandwidth': bandwidth, 'password': password, 'expire': expire}),
+            data: add_csrf_token({'servers': servers, 'bandwidth': bandwidth, 'password': password, 'expire': expire, 'server_list': server_ids_str}),
             statusCode: {
                 200: function() {
                     window.location.reload(true);
