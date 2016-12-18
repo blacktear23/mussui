@@ -25,7 +25,7 @@
       <div class="col-md-offset-4 col-md-4" style="margin-top: 120px;">
         <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Muss Login</h3>
+                <h3 class="box-title">{% t "Muss Login" %}</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -35,31 +35,31 @@
                 {% if error_message %}
                 <div class="alert alert-danger">{{error_message}}</div>
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-4 control-label">User Name</label>
+                    <label for="inputEmail3" class="col-sm-4 control-label">{% t "User Name" %}</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" id="inputEmail3" name="username" placeholder="User Name">
+                      <input type="text" class="form-control" id="inputEmail3" name="username" placeholder="{% t "User Name"%}">
                   </div>
                 </div>
                 {% else %}
                 <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-4 control-label">User Name</label>
+                    <label for="inputEmail3" class="col-sm-4 control-label">{% t "User Name" %}</label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" id="inputEmail3" name="username" placeholder="User Name">
+                      <input type="text" class="form-control" id="inputEmail3" name="username" placeholder="{% t "User Name" %}">
                   </div>
                 </div>
                 {% endif %}
                 <div class="form-group">
-                  <label for="inputPassword3" class="col-sm-4 control-label">Password</label>
+                    <label for="inputPassword3" class="col-sm-4 control-label">{% t "Password" %}</label>
 
                   <div class="col-sm-8">
-                    <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="Password">
+                      <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="{% t "Password" %}">
                   </div>
                 </div>
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <button type="reset" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-info pull-right">Login</button>
+                  <button type="reset" class="btn btn-default">{% t "Cancel" %}</button>
+                  <button type="submit" class="btn btn-info pull-right">{% t "Login" %}</button>
               </div>
               <!-- /.box-footer -->
             </form>

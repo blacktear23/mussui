@@ -7,7 +7,10 @@ from django.db.models import Q
 from django.http import *
 from django.template.base import add_to_builtins
 from django.views.decorators.http import *
+from django.template.base import add_to_builtins
 from db.models import *
+
+add_to_builtins("sysadmin.templatetags.tags")
 
 
 def is_logined(request):

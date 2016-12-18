@@ -254,3 +254,15 @@ msgstr "授权码"
 
 msgid "Update"
 msgstr "更新"
+
+msgid "Muss Login"
+msgstr "Muss登陆"
+
+msgid "Portal"
+msgstr "控制台"
+
+msgid "Hello"
+msgstr "您好"
+
+msgid "Configuration"
+msgstr "配置信息"

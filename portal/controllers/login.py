@@ -1,4 +1,5 @@
 from portal.views import *
+from django.utils.translation import ugettext as _
 
 
 def login_index(request):
@@ -18,7 +19,7 @@ def do_login(request):
     if user is not None:
         request.session['user_id'] = user.id
         return redirect("/")
-    return render(request, 'portal/login/login.html', {'error_message': 'Login Error'})
+    return render(request, 'portal/login/login.html', {'error_message': _('Login Error')})
 
 
 @ulogin_required
