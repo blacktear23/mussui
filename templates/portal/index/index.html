@@ -50,6 +50,28 @@
               </li>
             </ul>
           </li>
+          <li class="dropdown messages-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                {% t "Language" %}
+            </a>
+            <ul class="dropdown-menu" style="width:80px;">
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li>
+                    <a style="color:black;" href="#" onclick="change_language('zh-hans');">
+                        中文
+                    </a>
+                  </li>
+                  <li>
+                    <a style="color:black;" href="#" onclick="change_language('en');">
+                        English
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
         </ul>
       </div>
     </nav>

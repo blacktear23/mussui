@@ -46,6 +46,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'mussui.locale.DefaultLocalSetterMiddle',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -102,6 +104,7 @@ DATABASE_ROUTERS = ['db.router.MonitorRouter', ]
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
 LANGUAGE_CODE = config.LANGUAGE
+LANGUAGE_COOKIE_NAME = 'mussui_language'
 
 TIME_ZONE = None
 

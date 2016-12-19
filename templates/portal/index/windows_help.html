@@ -2,21 +2,15 @@
 <div class=col-md-8>
     <div class="box box-solid">
         <div class="box-header with-border">
-            <h3>Usage</h3>
+            <h3>{% t "Usage" %}</h3>
         </div>
         <div class="box-body">
             <ol>
-                <li>Download client package and install</li>
-                <li>Enter Server Address, User Name and Password<br/>
+                <li>{% t "Download client package and install" %}</li>
+                <li>{% t "Enter Server Address, User Name and Password" %}<br/>
                     <img src="/static/img/help/win1.png" width="300" />
                 </li>
-                <li>Click <b>Start Proxy</b> button to start proxy</li>
-                <li>Update your FireFox proxy configuration
-                    <ul>
-                        <li><img style="width:500px;" src="/static/img/help/firefox1.png"></li>
-                        <li><img style="width:500px;" src="/static/img/help/firefox2.png"></li>
-                    </ul>
-                </li>
+                <li>{% t "Click Start Proxy button to start proxy" %}</li>
             </ol>
         </div>
     </div>
@@ -24,12 +18,16 @@
 <div class="col-md-4">
     <div class="box box-solid">
         <div class="box-header with-border">
-            <h3>Download</h3>
+            <h3>{% t "Download" %}</h3>
         </div>
         <div class="box-body">
-            <a class="btn btn-success col-md-12" href="/static/download/windows/MussWindowsInstaller.msi">
+            <a class="btn btn-success col-md-12" href="/static/download/windows/MussWindowsInstaller_CN.msi">
                 <i class="fa fa-download"></i>
-                Download MussWindowsInstaller.msi
+                {% t "Download" %} MussWindowsInstaller_CN.msi
+            </a>
+            <a class="btn btn-success col-md-12" href="/static/download/windows/MussWindowsInstaller_EN.msi" style="margin-top: 10px;">
+                <i class="fa fa-download"></i>
+                {% t "Download" %} MussWindowsInstaller_EN.msi
             </a>
         </div>
     </div>

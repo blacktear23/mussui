@@ -266,3 +266,18 @@ msgstr "您好"
 
 msgid "Configuration"
 msgstr "配置信息"
+
+msgid "Usage"
+msgstr "使用方法"
+
+msgid "Download client package and install"
+msgstr "下载客户端软件并安装"
+
+msgid "Enter Server Address, User Name and Password"
+msgstr "输入服务器地址, 用户名和密码"
+
+msgid "Click Start Proxy button to start proxy"
+msgstr "点击启动代理按钮启动代理服务"
+
+msgid "Language"
+msgstr "语言"
