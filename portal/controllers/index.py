@@ -5,6 +5,7 @@ from portal.views import *
 def index(request):
     ssuser = request.ssuser
     data = {
+        'server_address': request.META["HTTP_HOST"],
         'user': ssuser,
         'config': ssuser.generate_config(),
     }

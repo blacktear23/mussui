@@ -1,3 +1,4 @@
+import os
 from django import template
 from django.utils.translation import ugettext as _
 
@@ -10,6 +11,13 @@ def t(message):
     if len(message) == 0:
         return message
     return _(message)
+
+
+@register.simple_tag
+def img_with_lang(request, path):
+    lang = request.LANGUAGE_CODE.lower()
+    fname, ext = os.path.splitext(path)
+    return "%s.%s%s" % (fname, lang, ext)
 
 
 @register.inclusion_tag('tags/paginate.html')

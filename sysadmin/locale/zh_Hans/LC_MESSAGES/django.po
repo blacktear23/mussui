@@ -281,3 +281,21 @@ msgstr "点击启动代理按钮启动代理服务"
 
 msgid "Language"
 msgstr "语言"
+
+msgid "Download client application"
+msgstr "下载客户端程序"
+
+msgid "Create directory at ~/muss and move muss-local file to ~/muss"
+msgstr "在Home目录下创建muss文件夹，然后把muss-local文件移动到~/muss"
+
+msgid "Copy Configuration to ~/muss/config.json"
+msgstr "复制配置信息到~/muss/config.json文件"
+
+msgid "Execute client application: ~/muss/muss-local -c ~/muss/config.json"
+msgstr "在命令行执行: ~/muss/muss-local -c ~/muss/config.json"
+
+msgid "Update system level SOCKS5 proxy configuration: Server: 127.0.0.1, Port: 7070"
+msgstr "更新系统的SOCKS5代理配置：服务器: 127.0.0.1, 端口: 7070"
+
+msgid "Server Address is"
+msgstr "服务器地址为"
