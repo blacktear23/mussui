@@ -13,7 +13,8 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="/static/css/skins/_all-skins.min.css">
-
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -29,8 +30,8 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
+            <form role="form" class="form-horizontal" method="POST" action="/do_login">
             <div class="box-body">
-              <form role="form" class="form-horizontal" method="POST" action="/do_login">
                 {% csrf_token %}
                 {% if error_message %}
                 <div class="alert alert-danger">{{error_message}}</div>
@@ -58,12 +59,34 @@
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                  <button type="reset" class="btn btn-default">{% t "Cancel" %}</button>
-                  <button type="submit" class="btn btn-info pull-right">{% t "Login" %}</button>
+                  <div class="btn-group" style="display:inline-block;">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{% t "Language" %} <span class="fa fa-caret-down"></span></button>
+                    <ul class="dropdown-menu">
+                        <li>
+                          <a href="#" onclick="change_language('zh-hans');">
+                              中文
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#" onclick="change_language('en');">
+                              English
+                          </a>
+                        </li>
+                    </ul>
+                  </div>
+                  <button type="submit" class="btn btn-info pull-right" style="margin-left: 10px;">{% t "Login" %}</button>
+                  <button type="reset" class="btn btn-default pull-right">{% t "Cancel" %}</button>
               </div>
               <!-- /.box-footer -->
             </form>
           </div>
       </div>
+<!-- jQuery 2.2.3 -->
+<script src="/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/js/app.min.js"></script>
+<script src="/static/js/base.js"></script>
 </body>
 </html>
