@@ -122,10 +122,13 @@ class SSUser(models.Model):
     def replace_servers(self, new_servers):
         self_servers = [s.id for s in self.servers.all()]
         need_replace = False
-        for ns in new_servers:
-            if ns.id not in self_servers:
-                need_replace = True
-                break
+        if len(new_servers) == len(self_servers):
+            for ns in new_servers:
+                if ns.id not in self_servers:
+                    need_replace = True
+                    break
+        else:
+            need_replace = True
         if need_replace:
             self.servers.clear()
             for ns in new_servers:
