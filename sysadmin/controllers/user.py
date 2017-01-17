@@ -62,8 +62,8 @@ def create(request):
         return render_400(_("require bandwidth parameter"))
     try:
         bandwidth = int(request.POST['bandwidth'])
-        if bandwidth < 1:
-            return render_400(_("Bandwidth should not less than 1"))
+        if bandwidth < 0:
+            return render_400(_("Bandwidth should not less than 0"))
         max_bandwidth = int(request.license_config.get("maxbw", 1))
         if bandwidth > max_bandwidth:
             return render_400(_("Bandwidth exceed max bandwidth quota"))
@@ -105,8 +105,8 @@ def edit(request, id):
         return render_400(_("require bandwidth parameter"))
     try:
         bandwidth = int(request.POST['bandwidth'])
-        if bandwidth < 1:
-            return render_400(_("Bandwidth should not less than 1"))
+        if bandwidth < 0:
+            return render_400(_("Bandwidth should not less than 0"))
         max_bandwidth = int(request.license_config.get("maxbw", 1))
         if bandwidth > max_bandwidth:
             return render_400(_("Bandwidth exceed max bandwidth quota"))
