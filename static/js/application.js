@@ -241,7 +241,7 @@ function render_customer_modal(elem) {
                 var msg = $(pfx+"servers").data("msg");
                 for (var i in data['servers']) {
                     var item = data['servers'][i];
-                    servers_html += '<div><span style="min-width:100px;padding-right:5px;">' + msg + ': ' + item[2].toUpperCase() + '</span><span>IP: ' + item[1] + "</span></div>";
+                    servers_html += '<div><span>' + item[0].toUpperCase() + '&nbsp;(' + item[1] + ')</span><span style="min-width:100px;padding-left:5px;">' + msg + ': ' + item[2].toUpperCase() + '</span></div>';
                 }
                 $(pfx+"servers").html(servers_html);
                 var css = "text-green";
