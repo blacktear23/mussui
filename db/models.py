@@ -276,6 +276,10 @@ class License(models.Model):
             pass
         return None
 
+    def enable_unlimited_bandwidth(self):
+        ubcfg = int(self.get_config().get("unlimited", 0))
+        return ubcfg == 1
+
     def expired(self):
         cfg = self.get_config()
         if cfg is None or 'expire' not in cfg:

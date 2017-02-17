@@ -63,10 +63,15 @@ def create(request):
     try:
         bandwidth = int(request.POST['bandwidth'])
         if bandwidth < 0:
-            return render_400(_("Bandwidth should not less than 0"))
+            return render_400(_("Bandwidth should not less than %d") % 0)
         max_bandwidth = int(request.license_config.get("maxbw", 1))
         if bandwidth > max_bandwidth:
             return render_400(_("Bandwidth exceed max bandwidth quota"))
+        min_bandwidth = 1
+        if request.license.enable_unlimited_bandwidth():
+            min_bandwidth = 0
+        if bandwidth < min_bandwidth:
+            return render_400(_("Bandwidth should not less than %d") % min_bandwidth)
     except:
         return render_400(_("bandwidth parameter should be number"))
     if 'password' not in request.POST:
@@ -106,10 +111,15 @@ def edit(request, id):
     try:
         bandwidth = int(request.POST['bandwidth'])
         if bandwidth < 0:
-            return render_400(_("Bandwidth should not less than 0"))
+            return render_400(_("Bandwidth should not less than %d") % 0)
         max_bandwidth = int(request.license_config.get("maxbw", 1))
         if bandwidth > max_bandwidth:
             return render_400(_("Bandwidth exceed max bandwidth quota"))
+        min_bandwidth = 1
+        if request.license.enable_unlimited_bandwidth():
+            min_bandwidth = 0
+        if bandwidth < min_bandwidth:
+            return render_400(_("Bandwidth should not less than %d") % min_bandwidth)
     except:
         return render_400(_("bandwidth parameter should be number"))
 

@@ -159,8 +159,8 @@ msgstr "加密算法"
 msgid "exceed number users quota"
 msgstr "超出授权的用户上限"
 
-msgid "Bandwidth should not less than 1"
-msgstr "带宽不能小于1"
+msgid "Bandwidth should not less than %d"
+msgstr "带宽不能小于%d"
 
 msgid "Bandwidth exceed max bandwidth quota"
 msgstr "超出授权的带宽上限"
@@ -323,3 +323,6 @@ msgstr "无数据"
 
 msgid "Total Bandwidth"
 msgstr "总带宽"
+
+msgid "Unlimited Bandwidth"
+msgstr "带宽无限制"
