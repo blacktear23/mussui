@@ -272,7 +272,7 @@ class License(models.Model):
             verify = rsa.verify(pconf + self.fingerprint, sign, pubkey)
             if verify:
                 return self.__load_config(pconf)
-        except Exception, e:
+        except Exception as e:
             pass
         return None
 

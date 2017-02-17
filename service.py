@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def help():
-    print """services.py [service name] arg1 arg2 arg3 ..."""
+    print("""services.py [service name] arg1 arg2 arg3 ...""")
     list_services()
 
 
@@ -28,12 +28,12 @@ def run_service():
 def list_services():
     services_dir = BASE_DIR + "/services/*_service.py"
     file_list = glob.glob(services_dir)
-    print "services: "
+    print("services: ")
     for fname in file_list:
         if fname.find("__init__") >= 0:
             continue
         service_name = fname.split("/")[-1][:-11]
-        print "   %s" % (service_name)
+        print("   %s" % (service_name))
 
 
 if __name__ == "__main__":
