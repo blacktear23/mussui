@@ -48,3 +48,33 @@ def fdate(value):
     if value is None:
         return ""
     return value.strftime("%Y-%m-%d %H:%M:%S")
+
+
+@register.filter
+def format_flow(value):
+    value = int(value)
+    if value >= 1024 * 1024 * 1024 * 1024:
+        return "%.2f TB" % (value / 1024.0 / 1024.0 / 1024.0 / 1024.0)
+    elif value >= 1024 * 1024 * 1024:
+        return "%.2f GB" % (value / 1024.0 / 1024.0 / 1024.0)
+    elif value >= 1024 * 1024:
+        return "%.2f MB" % (value / 1024.0 / 1024.0)
+    elif value >= 1024:
+        return "%.2f KB" % (value / 1024.0)
+    else:
+        return "%d B" % value
+
+
+@register.filter
+def format_bandwidth(value):
+    value = int(value)
+    if value >= 1000 * 1000 * 1000 * 1000:
+        return "%.2f Tbps" % (value / 1000.0 / 1000.0 / 1000.0 / 1000.0)
+    elif value >= 1000 * 1000 * 1000:
+        return "%.2f Gbps" % (value / 1000.0 / 1000.0 / 1000.0)
+    elif value >= 1000 * 1000:
+        return "%.2f Mbps" % (value / 1000.0 / 1000.0)
+    elif value >= 1000:
+        return "%.2f Kbps" % (value / 1000.0)
+    else:
+        return "%d bps" % value

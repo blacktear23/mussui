@@ -255,6 +255,19 @@ function render_customer_modal(elem) {
     });
 }
 
+function render_total_bandwidth_chart(chart_elem) {
+    var url = "/admin/total_bandwidth";
+    $.ajax({
+        type: "GET",
+        url: url,
+        statusCode: {
+            200: function(data) {
+                render_bandwidth_chart(data, chart_elem);
+            }
+        }
+    });
+}
+
 function render_customer_modal_chart(elem) {
     var pfx = "#customer-detail-";
     var chart_elem = $(pfx+"bandwidth-chart");
@@ -356,10 +369,8 @@ function render_connection_chart(data, elemid) {
         ],
         legend: {
             layout: 'veritcal',
-            align: 'left',
+            align: 'right',
             verticalAlign: 'top',
-            x: 100,
-            y: 30,
             floating: true,
             borderWidth: 1
         },
@@ -401,10 +412,8 @@ function render_bandwidth_chart(data, elemid) {
         ],
         legend: {
             layout: 'veritcal',
-            align: 'left',
+            align: 'right',
             verticalAlign: 'top',
-            x: 100,
-            y: 30,
             floating: true,
             borderWidth: 1
         },

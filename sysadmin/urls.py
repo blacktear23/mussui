@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('sysadmin.controllers.login',
     # Login
     url(r'^/?$', 'index'),
+    url(r'^total_bandwidth$', 'total_bandwidth'),
     url(r'^login$', 'login_index'),
     url(r'^do_login$', 'do_login'),
     url(r'^logout$', 'do_logout'),

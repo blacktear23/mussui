@@ -299,3 +299,27 @@ msgstr "更新系统的SOCKS5代理配置：服务器: 127.0.0.1, 端口: 7070"
 
 msgid "Server Address is"
 msgstr "服务器地址为"
+
+msgid "Top 10 Flow Customers"
+msgstr "流量使用前10用户"
+
+msgid "Top 10 Bandwidth Customers"
+msgstr "带宽使用前10用户"
+
+msgid "Inbound Flow"
+msgstr "上传流量"
+
+msgid "Outbound Flow"
+msgstr "下载流量"
+
+msgid "Inbound Bandwidth"
+msgstr "上传带宽"
+
+msgid "Outbound Bandwidth"
+msgstr "下载带宽"
+
+msgid "No Data"
+msgstr "无数据"
+
+msgid "Total Bandwidth"
+msgstr "总带宽"
