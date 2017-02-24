@@ -1,0 +1,54 @@
+{% extends "sysadmin/layout/master.html" %}
+{% block content %}
+<section class="content-header">
+    <h1>{% t "Operation Log" %}</h1>
+</section>
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+        {% csrf_token %}
+        <div class="box box-primary">
+          <div class="box-header with-border">
+              <h3 class="box-title">{% t "Operation Log" %}</h3>
+            <div class="box-tools">
+              <form method="GET">
+              <div class="input-group input-group-sm" style="width: 400px;">
+                <input type="text" name="end_date" class="form-control pull-right" style="width:150px;" placeholder="{% t "End Date" %}" value="{{end_date}}">
+                <input type="text" name="begin_date" class="form-control pull-right" style="width:150px;" placeholder="{% t "Begin Date" %}" value="{{begin_date}}">
+                <div class="input-group-btn">
+                  <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+              </form>
+            </div>
+          </div>
+          <div class="box-body">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                    <th>{% t "Operator" %}</th>
+                    <th>{% t "Target" %}</th>
+                    <th>{% t "Date" %}</th>
+                    <th style="width:55%;">{% t "Message" %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in logs %}
+                <tr>
+                  <td>{{log.operator}}</td>
+                  <td>{{log.target}}</td>
+                  <td>{{log.date|fdate}}</td>
+                  <td>{{log.message}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="box-footer clearfix">
+            {% paginate logs request %}
+          </div>
+        </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

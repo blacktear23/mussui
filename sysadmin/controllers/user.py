@@ -95,6 +95,7 @@ def create(request):
         ssuser = SSUser.create(name, servers, bandwidth, password, dexpire)
     except Exception as e:
         return render_400("%s" % e)
+    log_request(request, ssuser.name, "Create new user")
     return render_200("OK")
 
 
@@ -105,6 +106,7 @@ def edit(request, id):
     if request.license_config is None:
         return render_400(_("license is expired"))
     ssuser = get_object_or_404(SSUser, pk=id)
+    message = "Update user"
 
     if 'bandwidth' not in request.POST:
         return render_400(_("require bandwidth parameter"))
@@ -136,6 +138,7 @@ def edit(request, id):
     if password != "":
         if len(password) < 6:
             return render_400(_("password should not less than 6 character"))
+        message += " change password"
         ssuser.set_password(password, False)
 
     if 'expire' in request.POST:
@@ -144,8 +147,12 @@ def edit(request, id):
             dexpire = parse_datetime(expire)
             if dexpire is None:
                 return render_400(_("expire date is not valid"))
+            if ssuser.expire_date != dexpire:
+                message += " change expire date from %s to %s" % (ssuser.expire_date, dexpire)
             ssuser.expire_date = dexpire
         else:
+            if ssuser.expire_date is not None:
+                message += " change expire date from %s to %s" % (ssuser.expire_date, 'None')
             ssuser.expire_date = None
 
     if 'server_list' in request.POST:
@@ -157,6 +164,7 @@ def edit(request, id):
             qserver = Server.objects.filter(id__in=server_list)
             ssuser.replace_servers(qserver)
             if servers != ssuser.number_server:
+                message += " change number server from %s to %s" % (ssuser.number_server, servers)
                 ssuser.number_server = servers
         else:
             # assigned server is less than just call auto assign
@@ -164,8 +172,11 @@ def edit(request, id):
                 ssuser.number_server = servers
                 ssuser.auto_assign_servers()
 
+    if ssuser.bandwidth != bandwidth:
+        message += " change bandwidth from %s to %s" % (ssuser.bandwidth, bandwidth)
     ssuser.bandwidth = bandwidth
     ssuser.save()
+    log_request(request, ssuser.name, message)
     return render_200("OK")
 
 
@@ -204,6 +215,7 @@ def config(request, id):
 def enable(request, id):
     user = get_object_or_404(SSUser, pk=id)
     user.enable()
+    log_request(request, user.name, "Enable user")
     return redirect("/admin/customers")
 
 
@@ -212,6 +224,7 @@ def enable(request, id):
 def disable(request, id):
     user = get_object_or_404(SSUser, pk=id)
     user.disable()
+    log_request(request, user.name, "Disable user")
     return redirect("/admin/customers")
 
 
@@ -219,5 +232,6 @@ def disable(request, id):
 @load_license
 def delete(request, id):
     user = get_object_or_404(SSUser, pk=id)
+    log_request(request, user.name, "Delete user")
     user.delete()
     return redirect("/admin/customers")

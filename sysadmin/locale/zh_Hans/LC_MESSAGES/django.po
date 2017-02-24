@@ -326,3 +326,24 @@ msgstr "总带宽"
 
 msgid "Unlimited Bandwidth"
 msgstr "带宽无限制"
+
+msgid "Operation Log"
+msgstr "操作日志"
+
+msgid "Operator"
+msgstr "操作人"
+
+msgid "Target"
+msgstr "操作对象"
+
+msgid "Date"
+msgstr "日期"
+
+msgid "Message"
+msgstr "信息"
+
+msgid "Begin Date"
+msgstr "起始日期"
+
+msgid "End Date"
+msgstr "结束日期"

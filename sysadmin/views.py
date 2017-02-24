@@ -114,3 +114,8 @@ def paginate(request, query, per_page=30):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         return paginator.page(paginator.num_pages)
+
+
+def log_request(request, target, message):
+    operator = request.user.username
+    OperationLog.log(operator, target, message)

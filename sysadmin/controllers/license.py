@@ -24,4 +24,5 @@ def update(request):
     license = License.get()
     license.license = request.POST['license']
     license.save()
+    log_request(request, "license", "Update license")
     return render_200("OK")

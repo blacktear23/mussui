@@ -39,6 +39,7 @@ def create(request):
     if form.is_valid():
         server = Server()
         save_instance(form, server)
+        log_request(request, server.hostname, "Create new server")
         return render_200("OK")
     return render_form_error(form)
 
@@ -65,9 +66,18 @@ def edit(request, id):
     if request.license_config is None:
         return render_json({"hostname": "license is expired"}, 400)
     server = get_object_or_404(Server, pk=id)
+    message = "Update server"
     form = ServerForm(request.POST)
     if form.is_valid():
+        cdata = form.cleaned_data
+        if cdata['status'] != server.status:
+            message += " change status from %s to %s" % (server.status, cdata['status'])
+        if cdata['hostname'] != server.hostname:
+            message += " change hostname from %s to %s" % (server.hostname, cdata['hostname'])
+        if cdata['encryption'] != server.encryption:
+            message += " change encryption from %s to %s" % (server.encryption, cdata['encryption'])
         save_instance(form, server)
+        log_request(request, server.hostname, message)
         return render_200("OK")
     return render_form_error(form)
 
@@ -76,5 +86,6 @@ def edit(request, id):
 @load_license
 def delete(request, id):
     server = get_object_or_404(Server, pk=id)
+    log_request(request, server.hostname, "Delete server")
     server.delete()
     return redirect("/admin/servers")

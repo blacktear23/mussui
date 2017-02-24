@@ -39,3 +39,7 @@ urlpatterns += patterns('sysadmin.controllers.license',
     url(r'^license/?$', 'index'),
     url(r'^license/update$', 'update'),
 )
+
+urlpatterns += patterns('sysadmin.controllers.operation_log',
+    url(r'^operation_log/?$', 'index'),
+)
