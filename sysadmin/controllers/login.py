@@ -61,6 +61,18 @@ def calculate_top_bandwidth_usage(start_date, limit):
     return ret
 
 
+def calculate_count_and_total_bandwidth():
+    sql = "SELECT COUNT(id) as `number`, SUM(bandwidth) as `bandwidth` FROM user WHERE status='Enabled'"
+    count, bandwidth = 0, 0
+    with connections['default'].cursor() as cursor:
+        cursor.execute(sql)
+        for row in cursor.fetchall():
+            count = row[0]
+            bandwidth = row[1]
+            break
+    return count, bandwidth
+
+
 @login_required
 @load_license
 def total_bandwidth(request):
@@ -82,9 +94,11 @@ def total_bandwidth(request):
 @active_page('dashboard')
 def index(request):
     start_date = datetime.now() - timedelta(days=1)
+    count, bw = calculate_count_and_total_bandwidth()
     data = {
-        "number_customers": SSUser.objects.count(),
+        "number_customers": count,
         "number_servers": Server.objects.count(),
+        "total_bandwidth": bw,
         "top_10_flow_user": calculate_top_flow_usage(start_date, 10),
         "top_10_bandwidth_user": calculate_top_bandwidth_usage(start_date, 10),
     }
