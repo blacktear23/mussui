@@ -89,6 +89,7 @@ class SSUser(models.Model):
         user.set_password(password, False)
         user.save()
         user.auto_assign_servers()
+        return user
 
     @classmethod
     def get_by_name(cls, username):
