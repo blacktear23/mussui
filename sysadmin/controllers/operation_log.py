@@ -18,8 +18,6 @@ def index(request):
             if pdate < begin_date:
                 end_date = pdate
 
-    print begin_date, end_date
-
     if end_date is not None and begin_date is not None:
         query = OperationLog.objects.filter(date__gte=end_date, date__lte=begin_date)
     else:

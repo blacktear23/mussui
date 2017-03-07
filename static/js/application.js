@@ -221,8 +221,8 @@ function edit_server(elem) {
 
 function render_customer_modal(elem) {
     var pfx = "#customer-detail-";
+    $(pfx+"username").html(elem.data("name"));
     $(pfx+"userid").html(elem.data("userid"));
-    $(pfx+"userid-2").html(elem.data("userid"));
     var status = elem.data('status');
     var status_html = '<span class="badge bg-green">'+status+'</span>';
     if (status != "Enabled") {
