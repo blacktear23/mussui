@@ -255,6 +255,11 @@ function render_customer_modal(elem) {
     });
 }
 
+function render_server_modal(elem) {
+    var pfx = "#server-detail-";
+    $(pfx+"hostname").html(elem.data("hostname"));
+}
+
 function render_total_bandwidth_chart(chart_elem) {
     var url = "/admin/total_bandwidth";
     $.ajax({
@@ -289,6 +294,22 @@ function render_customer_modal_chart(elem) {
         statusCode: {
             200: function(data) {
                 render_connection_chart(data, pfx+"connection-chart");
+            }
+        }
+    });
+}
+
+function render_server_modal_chart(elem) {
+    var pfx = "#server-detail-";
+    var chart_elem = $(pfx+"bandwidth-chart");
+    chart_elem.html("");
+    var url = "/api/statistic/server_bandwidth?serverid=" + elem.data('id');
+    $.ajax({
+        type: "GET",
+        url: url,
+        statusCode: {
+            200: function(data) {
+                render_bandwidth_chart(data, pfx+"bandwidth-chart");
             }
         }
     });
@@ -450,6 +471,20 @@ function show_customer_detail(elem) {
     });
     emodal.on("shown.bs.modal", function() {
         render_customer_modal_chart(elem);
+    });
+    emodal.modal("show");
+}
+
+function show_server_detail(elem) {
+    var elem = $(elem);
+    var emodal = $("#server-detail-modal");
+    emodal.unbind("shown.bs.modal");
+    emodal.unbind("show.bs.modal");
+    emodal.on("show.bs.modal", function() {
+        render_server_modal(elem);
+    });
+    emodal.on("shown.bs.modal", function() {
+        render_server_modal_chart(elem);
     });
     emodal.modal("show");
 }

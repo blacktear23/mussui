@@ -36,6 +36,9 @@ msgstr "用户"
 msgid "Servers"
 msgstr "服务器"
 
+msgid "Server"
+msgstr "服务器"
+
 msgid "Admin"
 msgstr "管理平台"
 

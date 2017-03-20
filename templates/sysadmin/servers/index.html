@@ -45,7 +45,7 @@
               <tbody>
                 {% for server in servers %}
                 <tr>
-                  <td>{{server.hostname}}</td>
+                    <td><a href="#" onclick="show_server_detail(this);" data-id="{{server.id}}" data-hostname="{{server.hostname}}">{{server.hostname}}</a></td>
                   <td>{{server.ip}}:{{server.port}}</td>
                   <td>
                     {% if server.status == "Enabled" %}
@@ -144,4 +144,5 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+{% include "sysadmin/servers/detail_modal.html" %}
 {% endblock %}

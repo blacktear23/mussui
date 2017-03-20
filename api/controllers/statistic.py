@@ -74,6 +74,10 @@ def user_bandwidth(request):
     if 'userid' not in request.GET:
         return render_json_error("Require userid parameter")
     userid = request.GET['userid']
+    try:
+        userid = int(userid)
+    except:
+        return render_json_error("userid not valid")
     now = datetime.now()
     one_day_before = now - timedelta(days=1)
     sql = generate_bandwidth_sql(userid, one_day_before, now)
@@ -98,6 +102,10 @@ def user_connection(request):
     if 'userid' not in request.GET:
         return render_json_error("Require userid parameter")
     userid = request.GET['userid']
+    try:
+        userid = int(userid)
+    except:
+        return render_json_error("userid not valid")
     now = datetime.now()
     one_day_before = now - timedelta(days=1)
     sql = generate_connection_sql(userid, one_day_before, now)
@@ -107,4 +115,32 @@ def user_connection(request):
         for row in cursor.fetchall():
             date_str = row[1].strftime("%Y-%m-%d %H:%M")
             ret[0].append([date_str, int(row[2])])
+    return render_json(ret)
+
+
+def generate_server_bandwidth_sql(server, tstart, tend):
+    tstart_str = tstart.strftime("%Y-%m-%d %H:%M:%S")
+    tend_str = tend.strftime("%Y-%m-%d %H:%M:%S")
+    sql = "SELECT server_name, date, SUM(connections) FROM connection_statistic WHERE server_name='%s' AND date BETWEEN '%s' AND '%s' GROUP BY date" % (server.hostname, tstart_str, tend_str)
+    return sql
+
+
+def server_bandwidth(request):
+    if 'serverid' not in request.GET:
+        return render_json_error("Require serverid parameter")
+    serverid = request.GET['serverid']
+    try:
+        server = Server.objects.get(pk=serverid)
+    except:
+        return render_json_error("Cannot find server", 404)
+    now = datetime.now()
+    one_day_before = now - timedelta(days=1)
+    sql = generate_server_bandwidth_sql(server, one_day_before, now)
+    ret = [[], []]
+    with connections['monitor'].cursor() as cursor:
+        cursor.execute(sql)
+        for row in cursor.fetchall():
+            date_str = row[1].strftime("%Y-%m-%d %H:%M")
+            ret[0].append([date_str, int(row[2])])
+            ret[1].append([date_str, int(row[3])])
     return render_json(ret)
