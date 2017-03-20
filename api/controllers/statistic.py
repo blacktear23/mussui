@@ -121,7 +121,7 @@ def user_connection(request):
 def generate_server_bandwidth_sql(server, tstart, tend):
     tstart_str = tstart.strftime("%Y-%m-%d %H:%M:%S")
     tend_str = tend.strftime("%Y-%m-%d %H:%M:%S")
-    sql = "SELECT server_name, date, SUM(connections) FROM connection_statistic WHERE server_name='%s' AND date BETWEEN '%s' AND '%s' GROUP BY date" % (server.hostname, tstart_str, tend_str)
+    sql = "SELECT userid, date, SUM(inbound_bandwidth), SUM(outbound_bandwidth) FROM flow_statistic WHERE userid='%s' AND date BETWEEN '%s' AND '%s' GROUP BY date" % (server.hostname, tstart_str, tend_str)
     return sql
 
 
