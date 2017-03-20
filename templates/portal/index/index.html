@@ -205,13 +205,13 @@ $(function(){
     var pfx = "#customer-detail-";
     var chart_elem = $(pfx+"bandwidth-chart");
     chart_elem.html("");
-    var url = "/api/statistic/bandwidth?userid={{user.id}}";
+    var url = "/api/statistic/bandwidth?userid={{user.userid}}";
     $.ajax({
         type: "GET",
         url: url,
         statusCode: {
             200: function(data) {
-                render_bandwidth_chart(data, pfx+"bandwidth-chart");
+                render_bandwidth_chart(data, pfx+"bandwidth-chart", 4);
             }
         }
     });

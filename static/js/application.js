@@ -267,7 +267,7 @@ function render_total_bandwidth_chart(chart_elem) {
         url: url,
         statusCode: {
             200: function(data) {
-                render_bandwidth_chart(data, chart_elem);
+                render_bandwidth_chart(data, chart_elem, 5);
             }
         }
     });
@@ -283,7 +283,7 @@ function render_customer_modal_chart(elem) {
         url: url,
         statusCode: {
             200: function(data) {
-                render_bandwidth_chart(data, pfx+"bandwidth-chart");
+                render_bandwidth_chart(data, pfx+"bandwidth-chart", 5);
             }
         }
     });
@@ -293,7 +293,7 @@ function render_customer_modal_chart(elem) {
         url: url,
         statusCode: {
             200: function(data) {
-                render_connection_chart(data, pfx+"connection-chart");
+                render_connection_chart(data, pfx+"connection-chart", 5);
             }
         }
     });
@@ -309,7 +309,7 @@ function render_server_modal_chart(elem) {
         url: url,
         statusCode: {
             200: function(data) {
-                render_bandwidth_chart(data, pfx+"bandwidth-chart");
+                render_bandwidth_chart(data, pfx+"bandwidth-chart", 5);
             }
         }
     });
@@ -326,8 +326,8 @@ function merge(obja, objb) {
     return ret;
 }
 
-function calculate_interval(data_length) {
-    return Math.round(data_length / 5);
+function calculate_interval(data_length, step) {
+    return Math.round(data_length / step);
 }
 
 
@@ -367,8 +367,8 @@ function format_number_by_step(value, unit, step) {
     }
 }
 
-function render_connection_chart(data, elemid) {
-    var xaxis_step = calculate_interval(data[0].length);
+function render_connection_chart(data, elemid, step) {
+    var xaxis_step = calculate_interval(data[0].length, step);
     var opts = {
         credits: {
             text: ''
@@ -406,8 +406,8 @@ function render_connection_chart(data, elemid) {
     $(elemid).highcharts(opts);
 }
 
-function render_bandwidth_chart(data, elemid) {
-    var xaxis_step = calculate_interval(data[0].length);
+function render_bandwidth_chart(data, elemid, step) {
+    var xaxis_step = calculate_interval(data[0].length, step);
     var opts = {
         credits: {
             text: ''
