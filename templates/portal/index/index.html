@@ -85,7 +85,12 @@
                 <h3 class="box-title">{% t "Configuration" %}</h3>
             </div>
             <div class="box-body">
-                <pre>{{config}}</pre>
+                <div class="col-md-6">
+                    <pre style="height:250px;">{{config}}</pre>
+                </div>
+                <div class="col-md-6">
+                    <div id="customer-detail-bandwidth-chart" style="height:250px;"></div>
+                </div>
             </div>
             <!-- /.box-body -->
           </div>
@@ -161,9 +166,12 @@
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 <!-- FastClick -->
 <script src="/static/plugins/fastclick/fastclick.js"></script>
+<!-- highcharts -->
+<script src="/static/plugins/highcharts/highcharts.js"></script>
 <!-- AdminLTE App -->
 <script src="/static/js/app.min.js"></script>
 <script src="/static/js/base.js"></script>
+<script src="/static/js/application.js"></script>
 <script>
 function change_password() {
     var emodal = $("#change-password-modal");
@@ -193,6 +201,21 @@ function change_password() {
     });
     emodal.modal('show');
 }
+$(function(){
+    var pfx = "#customer-detail-";
+    var chart_elem = $(pfx+"bandwidth-chart");
+    chart_elem.html("");
+    var url = "/api/statistic/bandwidth?userid={{user.id}}";
+    $.ajax({
+        type: "GET",
+        url: url,
+        statusCode: {
+            200: function(data) {
+                render_bandwidth_chart(data, pfx+"bandwidth-chart");
+            }
+        }
+    });
+})
 </script>
 </body>
 </html>
