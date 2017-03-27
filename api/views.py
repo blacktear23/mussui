@@ -6,7 +6,6 @@ from datetime import datetime
 from django.shortcuts import *
 from django.db.models import Q
 from django.http import *
-from django.template.base import add_to_builtins
 from django.forms.models import model_to_dict, save_instance
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
