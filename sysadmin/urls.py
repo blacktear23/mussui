@@ -1,45 +1,46 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
+from sysadmin.controllers import login, user, server, download, license, operation_log
 
-urlpatterns = patterns('sysadmin.controllers.login',
+urlpatterns = [
     # Login
-    url(r'^/?$', 'index'),
-    url(r'^total_bandwidth$', 'total_bandwidth'),
-    url(r'^login$', 'login_index'),
-    url(r'^do_login$', 'do_login'),
-    url(r'^logout$', 'do_logout'),
-    url(r'^change_password$', 'change_password'),
-)
+    url(r'^/?$', login.index),
+    url(r'^total_bandwidth$', login.total_bandwidth),
+    url(r'^login$', login.login_index),
+    url(r'^do_login$', login.do_login),
+    url(r'^logout$', login.do_logout),
+    url(r'^change_password$', login.change_password),
+]
 
-urlpatterns += patterns('sysadmin.controllers.user',
+urlpatterns += [
     # User admin
-    url(r"^customers/?$", 'index'),
-    url(r"^customers/create$", 'create'),
-    url(r"^customers/(?P<id>\d+)$", 'details'),
-    url(r"^customers/(?P<id>\d+)/config$", 'config'),
-    url(r"^customers/(?P<id>\d+)/edit$", 'edit'),
-    url(r"^customers/(?P<id>\d+)/enable$", 'enable'),
-    url(r"^customers/(?P<id>\d+)/disable$", 'disable'),
-    url(r"^customers/(?P<id>\d+)/delete$", 'delete'),
-)
+    url(r"^customers/?$", user.index),
+    url(r"^customers/create$", user.create),
+    url(r"^customers/(?P<id>\d+)$", user.details),
+    url(r"^customers/(?P<id>\d+)/config$", user.config),
+    url(r"^customers/(?P<id>\d+)/edit$", user.edit),
+    url(r"^customers/(?P<id>\d+)/enable$", user.enable),
+    url(r"^customers/(?P<id>\d+)/disable$", user.disable),
+    url(r"^customers/(?P<id>\d+)/delete$", user.delete),
+]
 
-urlpatterns += patterns('sysadmin.controllers.server',
+urlpatterns += [
     # User admin
-    url(r"^servers/?$", 'index'),
-    url(r"^servers/create$", 'create'),
-    url(r"^servers/(?P<id>\d+)$", 'detail'),
-    url(r"^servers/(?P<id>\d+)/edit$", 'edit'),
-    url(r"^servers/(?P<id>\d+)/delete$", 'delete'),
-)
+    url(r"^servers/?$", server.index),
+    url(r"^servers/create$", server.create),
+    url(r"^servers/(?P<id>\d+)$", server.detail),
+    url(r"^servers/(?P<id>\d+)/edit$", server.edit),
+    url(r"^servers/(?P<id>\d+)/delete$", server.delete),
+]
 
-urlpatterns += patterns('sysadmin.controllers.download',
-    url(r'^download/?$', 'index'),
-)
+urlpatterns += [
+    url(r'^download/?$', download.index),
+]
 
-urlpatterns += patterns('sysadmin.controllers.license',
-    url(r'^license/?$', 'index'),
-    url(r'^license/update$', 'update'),
-)
+urlpatterns += [
+    url(r'^license/?$', license.index),
+    url(r'^license/update$', license.update),
+]
 
-urlpatterns += patterns('sysadmin.controllers.operation_log',
-    url(r'^operation_log/?$', 'index'),
-)
+urlpatterns += [
+    url(r'^operation_log/?$', operation_log.index),
+]
