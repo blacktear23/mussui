@@ -36,7 +36,7 @@
                     <th>{% t "User ID" %}</th>
                     <th>{% t "Status" %}</th>
                     <th>{% t "Bandwidth" %}</th>
-                    <th>{% t "Muss Password" %}</th>
+                    <th>{% t "Servers" %}</th>
                     <th>{% t "Expire At" %}</th>
                     <th>{% t "Actions" %}</th>
                 </tr>
@@ -44,7 +44,7 @@
               <tbody>
                 {% for user in users %}
                 <tr>
-                    <td><a href="#" onclick="show_customer_detail(this);" data-userid="{{user.userid}}" data-name="{{user.name}}", data-status="{{user.status}}" data-password="{{user.password}}" data-created_at="{{user.created_at|fdate}}" data-id="{{user.id}}">{{user.name}}</td>
+                    <td><a href="#" onclick="show_customer_detail(this);" data-userid="{{user.userid}}" data-name="{{user.name}}", data-status="{{user.status}}", data-status_t="{% t user.status %}" data-password="{{user.password}}" data-created_at="{{user.created_at|fdate}}" data-id="{{user.id}}">{{user.name}}</td>
                   <td>{{user.userid}}</td>
                   <td>
                     {% if user.status == "Enabled" %}
@@ -54,7 +54,7 @@
                     {% endif %}
                   </td>
                   <td>{{user.bandwidth}} Mbps</td>
-                  <td>{{user.password}}</td>
+                  <td>{{user.servers_str|safe}}</td>
                   <td>{{user.expire_date|fdate}}</td>
                   <td>
                       <a href="#" class="btn btn-info btn-xs" onclick="show_customer_config(this);" data-id="{{user.id}}">{% t "Config" %}</a>

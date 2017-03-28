@@ -186,6 +186,7 @@ def render_ssuser(user):
         'name': user.name,
         'status': user.status,
         'password': user.password,
+        'bandwidth': user.bandwidth,
         'servers': servers,
         'expire': user.get_expire_str(),
         'is_expire': user.is_expire(),

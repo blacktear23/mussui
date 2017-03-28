@@ -224,9 +224,10 @@ function render_customer_modal(elem) {
     $(pfx+"username").html(elem.data("name"));
     $(pfx+"userid").html(elem.data("userid"));
     var status = elem.data('status');
-    var status_html = '<span class="badge bg-green">'+status+'</span>';
+    var status_t = elem.data('status_t');
+    var status_html = '<span class="badge bg-green">'+status_t+'</span>';
     if (status != "Enabled") {
-        status_html = '<span class="badge bg-red">'+status+'</span>';
+        status_html = '<span class="badge bg-red">'+status_t+'</span>';
     }
     $(pfx+"status").html(status_html);
     $(pfx+"password").html(elem.data("password"));
@@ -250,6 +251,7 @@ function render_customer_modal(elem) {
                 }
                 $(pfx+"expire").html("");
                 $(pfx+"expire").html(data["expire"]).attr("class", css);
+                $(pfx+"bandwidth").html(data["bandwidth"] + "&nbsp;Mbps");
             }
         }
     });

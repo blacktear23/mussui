@@ -178,6 +178,9 @@ class SSUser(models.Model):
             ret.append([server.hostname, "%s:%s" % (server.ip, server.port), "%s-auth" % server.encryption])
         return ret
 
+    def servers_str(self):
+        return "<br/>".join(["%s" % (i[0]) for i in self.get_servers()])
+
     def generate_config(self):
         server_password = []
         for server in self.get_servers():
