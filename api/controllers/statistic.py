@@ -44,8 +44,8 @@ def process_instance_data(instance):
     bw_data = instance['bandwidth']
     flow_in = int(bw_data['inbound'])
     flow_out = int(bw_data['outbound'])
-    bw_in = flow_in * 8 / 300
-    bw_out = flow_out * 8 / 300
+    bw_in = flow_in * 9 / 300
+    bw_out = flow_out * 9 / 300
     fs = FlowStatistic(userid=userid,
                        server_name=host,
                        date=date)
